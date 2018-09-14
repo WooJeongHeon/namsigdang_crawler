@@ -2,7 +2,8 @@ import csv
 
 class dataload:
     def load(self):
-        file = open('food.csv', 'r', encoding='euc-kr')
+        path_food = 'Food\\food.csv'
+        file = open(path_food, 'r', encoding='euc-kr')
         reader = csv.reader(file)
         dic = {}
         for data in reader:

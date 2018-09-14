@@ -1,27 +1,36 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
+from namdo_crowler import account
 import csv
 import re
 
 class namtochrome:
     def backup_csv_remove_overlap(self, list):
-        backup_file = open('backup_food.csv', 'a', encoding='euc-kr', newline='')
+        path_backup_food = 'Food\\backup_food.csv'
+        backup_file = open(path_backup_food, 'a', encoding='euc-kr', newline='')
         backup_writer = csv.writer(backup_file)
         for data in list:
             backup_writer.writerow([data[0], data[1], data[2], data[3]])
         backup_file.close()
+
     def launch(self):
+        path_food = 'Food\\food.csv'
+
         driver = webdriver.Chrome('chromedriver.exe')
         driver.get("http://portal.ndhs.or.kr/index")
         driver.implicitly_wait(3)
 
         menu = driver.find_element_by_xpath(
             '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
+
         id = driver.find_element_by_id('stuUserId')
-        id.send_keys('wookingwoo')
+        acc = account.Account()
+        id_pw = acc.account_load()
+        id.send_keys(id_pw[0])
         pw = driver.find_element_by_id('stuPassword')
-        pw.send_keys('wookingwoo123')
+        pw.send_keys(id_pw[1])
+
         driver.find_element_by_xpath('//*[@id="student"]/div/div[2]/button').click()
         sleep(4)
         driver.find_element_by_xpath('/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
@@ -59,7 +68,7 @@ class namtochrome:
             complete_food_list.append(regex.findall(food_))
         print(complete_food_list)"""
 
-        file = open('food.csv', 'w', encoding='euc-kr', newline='')
+        file = open(path_food, 'w', encoding='euc-kr', newline='')
         writer = csv.writer(file)
         compare_list = []
         regex_temp = re.compile('(?P<year>\d+)년+ (?P<month>\d+)월+ (?P<day>\d+)일')
