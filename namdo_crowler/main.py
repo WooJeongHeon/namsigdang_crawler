@@ -1,13 +1,13 @@
 from datetime import date
 from time import sleep
-from namto_croler import namto
-from namto_croler import dictionary_load
+from namdo_crowler import namdo
+from namdo_crowler import dictionary_load
 import calendar
 import csv
 import datetime
 import os
 
-chrome = namto.namtochrome()
+chrome = namdo.namtochrome()
 dictionary_load = dictionary_load.dataload()
 
 if os.path.exists("log.txt"):
@@ -25,7 +25,7 @@ while(True):
         today = calendar.day_name[my_date.weekday()]
         today_date = str(datetime.datetime.now())
 
-        if today == weekday[3]:  # 특정 요일에만 데이터를 가져옴
+        if today == weekday[0]:  # 특정 요일에만 데이터를 가져옴
             chrome.launch()
             file = open('food.csv', 'r', encoding='euc-kr')
             reader = csv.reader(file)
@@ -42,7 +42,7 @@ while(True):
                     logfile.writelines(str(datetime.datetime.now()) + ": " + "데이터를 불러 왔습니다.\n")
                     logfile.close()
                     file.close()
-                    sleep(10)
+                    sleep(86400 * 5)
 
             if bool_data_state:
                 print(data[0][0:4], today_date[0:4], data[0][4:6], today_date[5:7], data[0][6:8], today_date[8:10])
@@ -51,7 +51,7 @@ while(True):
                 logfile.writelines(str(datetime.datetime.now()) + ": " + "데이터를 불러왔지만 날짜에 일치하는 데이터가 없습니다.\n")
                 logfile.close()
                 file.close()
-                sleep(10)
+                sleep(3600)
 
         else:
             logfile = open('log.txt', 'a')
