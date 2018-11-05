@@ -1,14 +1,14 @@
 from datetime import date
 from time import sleep
-from namdo_crowler import namdo
-from namdo_crowler import dictionary_load
+from namdo import *
+from dictionary_load import *
 import calendar
 import csv
 import datetime
 import os
 
-chrome = namdo.namtochrome()
-dictionary_load = dictionary_load.dataload()
+chrome = namtochrome()
+dictionary_load = dataload()
 path_log = 'Data\\log.txt'
 path_food = 'Food\\food.csv'
 
@@ -19,7 +19,7 @@ else:
     logfile = open(path_log, 'w')
     logfile.close()
 
-while(True):
+while (True):
     try:
         print("데이터 수집을 시작합니다")
         weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -27,7 +27,7 @@ while(True):
         today = calendar.day_name[my_date.weekday()]
         today_date = str(datetime.datetime.now())
 
-        if today == weekday[4]:  # 특정 요일에만 데이터를 가져옴
+        if today == weekday[0]:  # 특정 요일에만 데이터를 가져옴
             chrome.launch()
             file = open(path_food, 'r', encoding='euc-kr')
             reader = csv.reader(file)
@@ -36,7 +36,8 @@ while(True):
             for data in reader:
                 # print(data[0][0:4], today_date[0:4], data[0][4:6], today_date[5:7], data[0][6:8], today_date[8:10])
 
-                if data[0][0:4] == today_date[0:4] and data[0][4:6] == today_date[5:7] and data[0][6:8] == today_date[8:10]:  # 다운 받은 데이터와 날짜가 일치하는 경우
+                if data[0][0:4] == today_date[0:4] and data[0][4:6] == today_date[5:7] and data[0][6:8] == today_date[
+                                                                                                           8:10]:  # 다운 받은 데이터와 날짜가 일치하는 경우
                     bool_data_state = True
                     dictionary_load.load()
                     print(str(datetime.datetime.now()) + ": " + "데이터를 불러 왔습니다.")

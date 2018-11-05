@@ -1,7 +1,7 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
-from namdo_crowler import account
+from account import *
 import csv
 import re
 
@@ -25,7 +25,7 @@ class namtochrome:
             '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
 
         id = driver.find_element_by_id('stuUserId')
-        acc = account.Account()
+        acc = Account()
         id_pw = acc.account_load()
         id.send_keys(id_pw[0])
         pw = driver.find_element_by_id('stuPassword')
