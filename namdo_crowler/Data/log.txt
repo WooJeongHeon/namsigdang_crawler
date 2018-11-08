@@ -1,2 +1,46 @@
-2018-09-14 13:37:55.062942: 데이터를 불러 왔습니다.
-2018-09-14 13:39:41.520173: 데이터를 불러 왔습니다.
+2018-11-05 12:51:10.304259: name 'account' is not defined
+2018-11-05 12:55:21.456132: 'NoneType' object has no attribute 'click'
+2018-11-05 12:55:26.367004: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 12:55:30.656558: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 13:32:14.734824: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 13:32:30.695193: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 13:32:38.788559: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 14:11:57.221154: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:12:14.231686: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:12:31.500555: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:12:51.304389: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:13:09.255453: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:14:41.850711: [Errno 2] No such file or directory: 'Food\\food.csv'
+2018-11-05 14:15:38.360053: 데이터를 불러 왔습니다.
+2018-11-05 14:18:00.484373: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 14:18:27.678681: 데이터를 불러 왔습니다.
+2018-11-05 14:25:11.004031: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=70.0.3538.77)
+  (Driver info: chromedriver=2.41.578737 (49da6702b16031c40d63e5618de03a32ff6c197e),platform=Windows NT 10.0.17134 x86_64)
+
+2018-11-05 14:26:24.018795: name 'eu20180507b' is not defined
+2018-11-05 14:27:09.234640: 데이터를 불러 왔습니다.
+2018-11-05 14:28:22.169884: 데이터를 불러 왔습니다.
+2018-11-05 15:03:06.197222: 데이터를 불러 왔습니다.
+2018-11-05 22:49:06.878693: 데이터를 불러 왔습니다.

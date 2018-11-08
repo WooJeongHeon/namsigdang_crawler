@@ -24,7 +24,7 @@ class dataload:
 
         f = open("dic.dat", "wb")
         pickle.dump(dic, f)
-        file.close()
+        f.close()
 
 
         return dic
