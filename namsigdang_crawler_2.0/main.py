@@ -13,18 +13,41 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+def make_path_dir(path_dir):
+    if not os.path.isdir(path_dir):
+        os.mkdir(path_dir)
+
+
+def make_path_file(path_file):
+    if not os.path.exists(path_file):
+        logfile = open(path_file, 'w')
+        logfile.close()
+        write_all_log_file(path_file + "파일이 없어 새로 생성합니다.")
+
+
 def write_all_log_file(logText):
-    print(today_date + ": " + logText)
+    print(str(datetime.datetime.now()) + ": " + logText)
 
     logfile = open(path_all_log, 'a')
-    logfile.writelines(today_date + ": " + logText + "\n")
+    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
     logfile.close()
 
 
 def write_error_log_file(logText):
     logfile = open(path_error_log, 'a')
-    logfile.writelines(today_date + ": " + logText + "\n")
+    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
     logfile.close()
+
+
+def def_sleep():
+    sleep_time_def = 3
+
+    if sleep_time_def < 60:
+        write_all_log_file(str(sleep_time_def) + "초 쉬기")
+    else:
+        write_all_log_file(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
+
+    sleep(sleep_time_def)
 
 
 # main Program
@@ -37,33 +60,63 @@ while (True):
         repeat_time += 1
         print(str(repeat_time) + "회째 실행!")
 
-        path_all_log = './data/log/all_log.txt'
+        my_date = datetime.date.today()  # 2019-04-07
+        day_of_the_week = calendar.day_name[my_date.weekday()]  # Sunday
+        my_date = str(my_date) + "-" + str(day_of_the_week)
+        today_date = str(datetime.datetime.now())  # 2019-04-07 16:45:15.103445
+
+        # Window path
+
+        # path_dir_data = 'data'
+        # path_dir_data_log = 'data\\log'
+        # path_dir_data_all_log = 'data\\log\\all_log'
+        # path_all_log = 'data\\log\\all_log\\all_log(' + my_date + ').txt'
+        # path_error_log = 'data\\log\\error_log.txt'
+        # path_change_DB_log = 'data\\log\\change_DB_log.txt'
+        #
+        # path_dir_data_crawling_menu = 'data\\crawling_menu'
+        # path_this_week_menu_csv = 'data\\crawling_menu\\this_week_menu.csv'
+        # path_backup_menu_csv = 'data\\crawling_menu\\backup_menu.csv'
+        # path_all_menu_txt = 'data\\crawling_menu\\all_menu.txt'
+        # path_all_menu_dat = 'data\\crawling_menu\\all_menu.dat'
+        #
+        # path_dir_data_account = 'data\\account'
+        # path_account = 'data\\account\\account.txt'
+
+        # Linux Server path
+
+        path_dir_data = './data'
+        path_dir_data_log = './data./log'
+        path_dir_data_all_log = './data/log/all_log'
+        path_all_log = './data/log/all_log/all_log(' + my_date + ').txt'
         path_error_log = './data/log/error_log.txt'
         path_change_DB_log = './data/log/change_DB_log.txt'
+
+        path_dir_data_crawling_menu = './data/crawling_menu'
         path_this_week_menu_csv = './data/crawling_menu/this_week_menu.csv'
         path_backup_menu_csv = './data/crawling_menu/backup_menu.csv'
         path_all_menu_txt = './data/crawling_menu/all_menu.txt'
-        path_account = './data/account/account.txt'
         path_all_menu_dat = './data/crawling_menu/all_menu.dat'
 
-        my_date = datetime.date.today()  # 2019-04-07
-        day_of_the_week = calendar.day_name[my_date.weekday()]  # Sunday
-        today_date = str(datetime.datetime.now())  # 2019-04-07 16:45:15.103445
+        path_dir_data_account = './data/account'
+        path_account = './data/account/account.txt'
 
-        if not os.path.exists(path_all_log):
-            logfile = open(path_all_log, 'w')
-            logfile.close()
-            write_all_log_file(path_all_log + "파일이 없어 새로 생성합니다.")
+        make_path_dir(path_dir_data)
+        make_path_dir(path_dir_data_log)
+        make_path_dir(path_dir_data_all_log)
+        write_all_log_file(path_dir_data_all_log + "경로가 없어 새로 생성 했습니다.")
+        make_path_dir(path_dir_data_account)
+        write_all_log_file(path_dir_data_account + "경로가 없어 새로 생성 했습니다.")
+        make_path_dir(path_dir_data_crawling_menu)
+        write_all_log_file(path_dir_data_crawling_menu + "경로가 없어 새로 생성 했습니다.")
 
-        if not os.path.exists(path_error_log):
-            logfile = open(path_error_log, 'w')
-            logfile.close()
-            write_all_log_file(path_error_log + "파일이 없어 새로 생성합니다.")
+        make_path_file(path_all_log)
+        make_path_file(path_error_log)
+        make_path_file(path_change_DB_log)
 
-        if not os.path.exists(path_change_DB_log):
-            logfile = open(path_change_DB_log, 'w')
-            logfile.close()
-            write_all_log_file(path_change_DB_log + "파일이 없어 새로 생성합니다.")
+        if not os.path.exists(path_all_menu_dat):
+            write_all_log_file("\n\n\'" + path_all_menu_dat + "\' 파일이 없습니다.\n추가해 주세요!\n프로그램을 종료합니다.")
+            break
 
         if not os.path.exists(path_account):
             write_all_log_file("계정 파일이 없어 새로 생성합니다.")
@@ -86,21 +139,21 @@ while (True):
         options.add_argument('headless')
         options.add_argument('window-size=1920x1080')
         options.add_argument("--disable-gpu")
-        # options.add_argument("disable-gpu")
-
-
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
 
         driver = webdriver.Chrome('chromedriver', chrome_options=options)
+        # driver = webdriver.Chrome('chromedriver.exe')
 
         driver.get("http://portal.ndhs.or.kr/index")
         write_all_log_file("남도학숙 사이트에 들어갔습니다.")
 
         driver.implicitly_wait(3)
+        def_sleep()
 
         menu = driver.find_element_by_xpath(
             '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
+        def_sleep()
 
         stuUserId = driver.find_element_by_id('stuUserId')
         stuUserId.send_keys(id)
@@ -114,23 +167,29 @@ while (True):
         write_all_log_file("로그인 버튼 클릭 완료")
 
         sleep(1)
+        def_sleep()
 
         WebDriverWait(driver, 5).until(EC.alert_is_present())  # (팝업창) 5초
         driver.switch_to.alert.accept()  # 팝업창 확인 클릭
         write_all_log_file("팝업창 확인 클릭 완료")
 
         sleep(1)
+        def_sleep()
 
+        # 리눅스에선 생략
         # driver.find_element_by_xpath('//*[@id="sidebarButton"]/span').click()  # 메뉴 클릭 완료
         # write_all_log_file("메뉴 클릭 완료")
         # sleep(1)
+        # def_sleep()
 
         driver.find_element_by_xpath('//*[@id="left-meun"]/div[1]/ul/li[3]/a/span').click()  # 학생생활지원 클릭 완료
         write_all_log_file("\'학생생활지원\' 클릭 완료")
         sleep(1)
+        def_sleep()
 
         driver.find_element_by_xpath('//*[@id="li_menu_Q0102"]/a').click()  # 식단표 클릭 완료
         write_all_log_file("\'식단표\' 클릭 완료")
+        def_sleep()
 
         # driver.find_element_by_xpath('/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
         # driver.implicitly_wait(1)
@@ -138,6 +197,7 @@ while (True):
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
         write_all_log_file("\'이전주 보기\' 클릭 완료")
         sleep(1)
+        def_sleep()
 
         for i in range(1, 5):
 
@@ -214,7 +274,7 @@ while (True):
             #
             #     file_change_DB_log = open(path_change_DB_log, 'a')
             #     file_change_DB_log.writelines(
-            #         "[" + day_of_the_week + "]" + today_date + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
+            #         "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
             #     file_change_DB_log.close()
 
             file_all_menu_dat_new = open(path_all_menu_dat, 'wb')
@@ -225,6 +285,7 @@ while (True):
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
             write_all_log_file("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
             sleep(1)
+            def_sleep()
 
         str_all_menu = str(dic_all_menu)
 
@@ -238,10 +299,15 @@ while (True):
         driver.close()
 
         write_all_log_file("1hour 휴식..")
-        sleep(60*60)
+        sleep(60 * 60)
 
-        random_time_sleep = random.randrange(60*60)
-        write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
+        random_time_sleep = random.randrange(60 * 60)
+
+        if random_time_sleep < 60:
+            write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
+        else:
+            write_all_log_file(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
+
         sleep(random_time_sleep)
 
         write_all_log_file("\n====================================================\n")
