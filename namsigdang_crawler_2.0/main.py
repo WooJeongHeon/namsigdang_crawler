@@ -13,9 +13,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def make_path_dir(path_dir):
+def make_path_dir(path_dir, bool):
     if not os.path.isdir(path_dir):
         os.mkdir(path_dir)
+
+        if bool:
+            write_all_log_file(path_dir + "경로가 없어 새로 생성 했습니다.")
 
 
 def make_path_file(path_file):
@@ -101,14 +104,11 @@ while (True):
         path_dir_data_account = './data/account'
         path_account = './data/account/account.txt'
 
-        make_path_dir(path_dir_data)
-        make_path_dir(path_dir_data_log)
-        make_path_dir(path_dir_data_all_log)
-        write_all_log_file(path_dir_data_all_log + "경로가 없어 새로 생성 했습니다.")
-        make_path_dir(path_dir_data_account)
-        write_all_log_file(path_dir_data_account + "경로가 없어 새로 생성 했습니다.")
-        make_path_dir(path_dir_data_crawling_menu)
-        write_all_log_file(path_dir_data_crawling_menu + "경로가 없어 새로 생성 했습니다.")
+        make_path_dir(path_dir_data, False)
+        make_path_dir(path_dir_data_log, False)
+        make_path_dir(path_dir_data_all_log, True)
+        make_path_dir(path_dir_data_account, True)
+        make_path_dir(path_dir_data_crawling_menu, True)
 
         make_path_file(path_all_log)
         make_path_file(path_error_log)
@@ -300,7 +300,7 @@ while (True):
 
         driver.close()
 
-        write_all_log_file("1hour 휴식..")
+        write_all_log_file("1시간 휴식..")
         sleep(60 * 60)
 
         random_time_sleep = random.randrange(60 * 60)
