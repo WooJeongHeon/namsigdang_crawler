@@ -61,7 +61,6 @@ while (True):
 
     try:
         repeat_time += 1
-        write_all_log_file(str(repeat_time) + "회째 실행!")
 
         my_date = datetime.date.today()  # 2019-04-07
         day_of_the_week = calendar.day_name[my_date.weekday()]  # Sunday
@@ -113,6 +112,8 @@ while (True):
         make_path_file(path_all_log)
         make_path_file(path_error_log)
         make_path_file(path_change_DB_log)
+
+        write_all_log_file(str(repeat_time) + "회째 실행!")
 
         if not os.path.exists(path_all_menu_dat):
             write_all_log_file("\n\n\'" + path_all_menu_dat + "\' 파일이 없습니다.\n추가해 주세요!\n프로그램을 종료합니다.")
