@@ -40,7 +40,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 3
+    sleep_time_def = 10
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -86,7 +86,7 @@ while (True):
         # Linux Server path
 
         path_dir_data = './data'
-        path_dir_data_log = './data./log'
+        path_dir_data_log = './data/log'
         path_dir_data_all_log = './data/log/all_log'
         path_all_log = './data/log/all_log/all_log(' + my_date + ').txt'
         path_error_log = './data/log/error_log.txt'
@@ -158,10 +158,12 @@ while (True):
         stuUserId = driver.find_element_by_id('stuUserId')
         stuUserId.send_keys(id)
         write_all_log_file("아이디 입력 완료")
+        def_sleep()
 
         stuPassword = driver.find_element_by_id('stuPassword')
         stuPassword.send_keys(pw)
         write_all_log_file("비밀번호 입력 완료")
+        def_sleep()
 
         driver.find_element_by_xpath('//*[@id="student"]/div/div[2]/button').click()  # Login 버튼 클릭
         write_all_log_file("로그인 버튼 클릭 완료")
@@ -320,3 +322,4 @@ while (True):
         write_all_log_file(error + "\n")
 
         write_error_log_file(error + "\n")
+
