@@ -61,7 +61,7 @@ while (True):
 
     try:
         repeat_time += 1
-        print(str(repeat_time) + "회째 실행!")
+        write_all_log_file(str(repeat_time) + "회째 실행!")
 
         my_date = datetime.date.today()  # 2019-04-07
         day_of_the_week = calendar.day_name[my_date.weekday()]  # Sunday
@@ -322,4 +322,3 @@ while (True):
         write_all_log_file(error + "\n")
 
         write_error_log_file(error + "\n")
-
