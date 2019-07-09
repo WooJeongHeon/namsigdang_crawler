@@ -7,7 +7,7 @@
 
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 
 
@@ -16,7 +16,14 @@ import json
 # 이 라인의 기능은 buttons 타입으로 버튼 2개를 생성합니다 즉 사용자가 처음으로 들어오면 버튼1,버튼2 이렇게 버튼2개가 생성됩니다.
 def print_json_data(request):
     
-    return JsonResponse({
-        'type':'buttons',
-        'buttons':['android app namsigdang', '버튼1','버튼2']
-    })
+    # return JsonResponse({
+    #     'status':'ok',
+    #     'buttons':['android app namsigdang', '버튼1','버튼2']
+    # })
+    
+    response_data = {}
+    response_data['status'] = 'ok'
+    response_data['utf-8'] = '한글 성공!!'
+
+    
+    return HttpResponse(json.dumps(response_data, ensure_ascii=False), content_type="application/json")
