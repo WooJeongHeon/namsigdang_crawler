@@ -16,14 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 # android_app 폴더의 views파일을 import 하겠다는 소리입니다 여기서 android_app 부분은 위에서 설정한 어플리케이션 폴더이름 입니다.
-from android_app import views
+import android_app.views
+import kakao_chatbot.views
 
 # 이 부분부터 요청이 들어오면 어디로 보내줄지 설정하는 부분입니다
 urlpatterns = [
 #     'admin/' 경로로 요청이 들어오면 admin.site.urls 로 보낸다는 뜻입니다
     path('admin/', admin.site.urls),
 #     kakao API 에서 keyboard 요청이 오면 이것을 3번라인에서 import 해준 views파일의 keyboard부분으로 보내준다는 의미입니다.
-    path('keyboard',views.keyboard),
+    path('keyboard',kakao_chatbot.views.keyboard),
 #      kakao API 에서 message 요청이 오면 이것을 3번라인에서 import 해준 views파일의 answer 부분으로 보내준다는 의미입니다.
-    path('message',views.answer),
+    path('message',kakao_chatbot.views.answer),
+    path('data',android_app.views.print_json_data),
+    
 ]

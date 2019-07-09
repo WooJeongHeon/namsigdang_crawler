@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'android_app', # 어플리케이션 이름을 추가해주세요 저는 위에서 android_app으로 만들었기때문에 android_app을 넣었습니다.
+    'kakao_chatbot',
 ]
 
 MIDDLEWARE = [
