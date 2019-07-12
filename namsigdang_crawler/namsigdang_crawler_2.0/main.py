@@ -43,7 +43,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 10
+    sleep_time_def = 1
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -143,7 +143,7 @@ while (True):
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
 
-        driver = webdriver.Chrome('chromedriver', chrome_options=options)
+        driver = webdriver.Chrome('/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options)
         # driver = webdriver.Chrome('chromedriver.exe')
 
         driver.get("http://portal.ndhs.or.kr/index")

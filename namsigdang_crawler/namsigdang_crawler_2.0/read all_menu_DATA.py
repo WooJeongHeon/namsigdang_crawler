@@ -1,6 +1,6 @@
 import pickle
 
-path_all_menu_dat = '/workspace/inflearn3/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
+path_all_menu_dat = '/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
 # path_all_menu_dat = './data/crawling_menu/all_menu.dat'
 
 # dic_all_menu={}
