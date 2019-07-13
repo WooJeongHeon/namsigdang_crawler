@@ -45,20 +45,46 @@ def all_menu(request):
 
 
 
-def classify_menu(request, date):
+def classify_menu(request, year, month):
     # return JsonResponse({
     #     'status':'ok',
     #     'buttons':['android app namsigdang', '버튼1','버튼2']
     # })
     
+    
+    if month < 10:
+        month = "0" + str(month)
+    
 
     test_dic = {}
     test_dic['status'] = 'ok'
     test_dic['utf-8'] = '한글 성공!!'
-    test_dic['페이지수'] = date
+    test_dic['년도'] = year
+    test_dic['월'] = month
+    
+    
+    
+    path_menu_dat = '/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/year_{y}/month_{m}/{y}_{m}_menu.dat'.format(y = year, m = month)
 
 
-    response_data = test_dic
+
+    
+    file_menu_dat = open(path_menu_dat, 'rb')
+    dic_menu = pickle.load(file_menu_dat)
+    file_menu_dat.close()
+    
+    dic_menu.update(test_dic)
+    
+    
+
+    
+    
+    
+    
+
+
+
+    response_data = dic_menu
     
 
     

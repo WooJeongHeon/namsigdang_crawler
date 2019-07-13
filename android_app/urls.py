@@ -18,7 +18,7 @@ from . import views
 
 
 urlpatterns = [
-    path('<int:date>/', views.classify_menu), # <int:date>/: 정수값을 입력받고 입력받은 값을 date 함
+    path('<int:year>/<int:month>/', views.classify_menu), # <int:year>/: 정수값을 입력받고 입력받은 값을 year 함
     # path('1', views.asdf), #1111111
 
     path('all', views.all_menu),
