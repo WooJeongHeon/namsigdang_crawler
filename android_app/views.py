@@ -9,21 +9,57 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 import json
+import pickle
 
 
 #  KAKAO API 에서 keyboard 부분을 보면 이용자가 최초로 채팅방에 들어올 때 호출 한다고 합니다
 # 그러면 이 라인은 이용자가 들어와서 keyboard 부분을 호출하면 위에 설정한 urls.py 파일이 자동으로 views.py 에 이부분으로 넘겨줍니다
 # 이 라인의 기능은 buttons 타입으로 버튼 2개를 생성합니다 즉 사용자가 처음으로 들어오면 버튼1,버튼2 이렇게 버튼2개가 생성됩니다.
-def print_json_data(request):
+def all_menu(request):
     
     # return JsonResponse({
     #     'status':'ok',
     #     'buttons':['android app namsigdang', '버튼1','버튼2']
     # })
     
-    response_data = {}
-    response_data['status'] = 'ok'
-    response_data['utf-8'] = '한글 성공!!'
+    path_all_menu_dat = '/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
+
+    
+    file_all_menu_dat = open(path_all_menu_dat, 'rb')
+    dic_all_menu = pickle.load(file_all_menu_dat)
+    file_all_menu_dat.close()
+    
+    test_dic = {}
+    test_dic['status'] = 'ok'
+    test_dic['utf-8'] = '한글 성공!!'
+    
+    
+    dic_all_menu.update(test_dic)
+
+    
+    response_data = dic_all_menu
+    
+
+    
+    return HttpResponse(json.dumps(response_data, ensure_ascii=False), content_type="application/json")
+
+
+
+def classify_menu(request, date):
+    # return JsonResponse({
+    #     'status':'ok',
+    #     'buttons':['android app namsigdang', '버튼1','버튼2']
+    # })
+    
+
+    test_dic = {}
+    test_dic['status'] = 'ok'
+    test_dic['utf-8'] = '한글 성공!!'
+    test_dic['페이지수'] = date
+
+
+    response_data = test_dic
+    
 
     
     return HttpResponse(json.dumps(response_data, ensure_ascii=False), content_type="application/json")

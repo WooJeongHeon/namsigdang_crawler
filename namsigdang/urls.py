@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 # android_app 폴더의 views파일을 import 하겠다는 소리입니다 여기서 android_app 부분은 위에서 설정한 어플리케이션 폴더이름 입니다.
 import android_app.views
 import kakao_chatbot.views
@@ -27,6 +27,8 @@ urlpatterns = [
     path('keyboard',kakao_chatbot.views.keyboard),
 #      kakao API 에서 message 요청이 오면 이것을 3번라인에서 import 해준 views파일의 answer 부분으로 보내준다는 의미입니다.
     path('message',kakao_chatbot.views.answer),
-    path('data',android_app.views.print_json_data),
+    
+    # path('data',android_app.views.print_json_data),
+    path('menu/', include('android_app.urls')), # 주소 뒤에 menu/가 오면 android_app.urls로 가라
     
 ]
