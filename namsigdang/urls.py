@@ -29,6 +29,6 @@ urlpatterns = [
     path('message',kakao_chatbot.views.answer),
     
     # path('data',android_app.views.print_json_data),
-    path('menu/', include('android_app.urls')), # 주소 뒤에 menu/가 오면 android_app.urls로 가라
+    path('eu/menu/', include('android_app.urls')), # 주소 뒤에 eu/menu/가 오면 android_app.urls로 가라
     
 ]

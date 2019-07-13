@@ -32,6 +32,8 @@ def all_menu(request):
     test_dic = {}
     test_dic['status'] = 'ok'
     test_dic['utf-8'] = '한글 성공!!'
+    test_dic['갯수'] = 0
+
     
     
     dic_all_menu.update(test_dic)
@@ -61,6 +63,8 @@ def classify_menu(request, year, month):
     test_dic['utf-8'] = '한글 성공!!'
     test_dic['년도'] = year
     test_dic['월'] = month
+    test_dic['갯수'] = 0
+
     
     
     
