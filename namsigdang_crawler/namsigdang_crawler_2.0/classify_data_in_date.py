@@ -26,21 +26,24 @@ for y in sorted(dic_all_menu):
 
 
         if not os.path.isdir(path_classify_dir):
-            print("no")
+            print("폴더 존재 no")
 
             os.mkdir(path_classify_dir)
             print("폴더 새로 생성")
         else:
-            print("ok")
+            print("폴더 존재 ok")
 
 
         if not os.path.exists(path_classify):
+            print("파일 존재 no")
             blank_dic = {}
             f = open(path_classify, 'wb')
             pickle.dump(blank_dic, f)
             f.close()
 
             print(path_classify + "파일이 없어 새로 생성합니다.")
+        else:
+            print("파일 존재 ok")
 
 
 
@@ -50,7 +53,9 @@ for y in sorted(dic_all_menu):
 
 
 
-        classified_dic.update(dic_all_menu)
+        
+        classified_dic[y] = dic_all_menu[y]
+
 
 
         file_classified_dic_new = open(path_classify, 'wb')
@@ -59,7 +64,7 @@ for y in sorted(dic_all_menu):
         
         
     else:
-        print("조건에 만족하지 않습니다.")
+        print("조건에 만족하지 않아 제외")
         print("y[0:2]: {}".format(y[0:2]))
         print("key값:{}".format(y))
 
