@@ -32,7 +32,10 @@ def all_menu(request):
     test_dic = {}
     test_dic['status'] = 'ok'
     test_dic['utf-8'] = '한글 성공!!'
-    test_dic['갯수'] = 0
+    test_dic['갯수'] = None
+    
+    test_dic['갯수'] = len(dic_all_menu)+ len(test_dic)
+
 
     
     
@@ -63,7 +66,7 @@ def classify_menu(request, year, month):
     test_dic['utf-8'] = '한글 성공!!'
     test_dic['년도'] = year
     test_dic['월'] = month
-    test_dic['갯수'] = 0
+    test_dic['갯수'] = None
 
     
     
@@ -76,6 +79,9 @@ def classify_menu(request, year, month):
     file_menu_dat = open(path_menu_dat, 'rb')
     dic_menu = pickle.load(file_menu_dat)
     file_menu_dat.close()
+    
+    test_dic['갯수'] = len(dic_menu)+ len(test_dic)
+
     
     dic_menu.update(test_dic)
     
