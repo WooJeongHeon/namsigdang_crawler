@@ -44,7 +44,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 0.01
+    sleep_time_def = 0.2
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -60,7 +60,7 @@ repeat_time = 0
 
 while (True):
 
-    # try:
+    try:
         repeat_time += 1
 
         my_date = datetime.date.today()  # 2019-04-07
@@ -143,9 +143,16 @@ while (True):
         options.add_argument("--disable-gpu")
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
+        
+
 
         driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options)
         # driver = webdriver.Chrome('chromedriver.exe')
+        write_all_log_file("크롬 드라이버 실행 완료")
+        
+        write_all_log_file("1초 쉬기..")
+        sleep(1)
+        
 
         driver.get("http://portal.ndhs.or.kr/index")
         write_all_log_file("남도학숙 사이트에 들어갔습니다.")
@@ -177,7 +184,9 @@ while (True):
         driver.switch_to.alert.accept()  # 팝업창 확인 클릭
         write_all_log_file("팝업창 확인 클릭 완료")
 
-        sleep(1)
+        write_all_log_file("3초 쉬기..")
+        sleep(3)
+
         def_sleep()
 
         # 리눅스에선 생략
@@ -239,7 +248,7 @@ while (True):
                 compare_list.append([term, food_element[1], food_element[2], food_element[3]])
             file.close()
             
-            write_all_log_file("compare_list: " + str(compare_list))
+            # write_all_log_file("compare_list: " + str(compare_list))
 
             write_all_log_file("\'" + path_this_week_menu_csv + "\' 쓰기 완료")
             
@@ -257,7 +266,7 @@ while (True):
             backup_file.close()
 
             write_all_log_file("\'" + path_backup_menu_csv + "\' 쓰기 완료")
-            write_all_log_file("dic_parsing_menu: " + str(dic_parsing_menu))
+            write_all_log_file("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
 
             
             
@@ -275,6 +284,7 @@ while (True):
             # write_all_log_file("dic_parsing_menu: " + str(dic_parsing_menu))
             
 
+
             file_all_menu_dat_old = open(path_all_menu_dat, 'rb')
             dic_all_menu = pickle.load(file_all_menu_dat_old)
             write_all_log_file(path_all_menu_dat + "을 불러왔습니다.")
@@ -284,18 +294,78 @@ while (True):
 
             dic_all_menu.update(dic_parsing_menu)
             write_all_log_file("크롤링한 데이터를 업데이트 했습니다.")
+            
+            
+            
+            file_all_menu_dat_new = open(path_all_menu_dat, 'wb')
+            pickle.dump(dic_all_menu, file_all_menu_dat_new)
+            write_all_log_file(path_all_menu_dat + "을 새로 작성했습니다.")
+            file_all_menu_dat_new.close()
+            
 
-        
-            
-            
-            print("dic_all_menu_old[eu20190802c]>> "+dic_all_menu_old["eu20190802c"])
-            print("dic_all_menu[eu20190802c]>> "+dic_all_menu["eu20190802c"])
+# --------------------------------------------------------------------------------------
+# 날짜별로 DB 분류해서 따로 저장
+# --------------------------------------------------------------------------------------
+            error_dic = {}
+            for y in sorted(dic_parsing_menu):   
+                if y[0:2] == "eu":        
+                    path_classify_dir_year = './data/crawling_menu/year_{}'.format(y[2:6])
+                    path_classify_dir_month = './data/crawling_menu/year_{}/month_{}'.format(y[2:6], y[6:8])
+                    path_classify = './data/crawling_menu/year_{}/month_{}/{}_menu.dat'.format(y[2:6], y[6:8], y[2:6] + "_" + y[6:8])
 
+                    if not os.path.isdir(path_classify_dir_year):
+                        os.mkdir(path_classify_dir_year)
+                        write_all_log_file(path_classify_dir_year + "경로가 없어 새로 생성 했습니다.")
+
+                    if not os.path.isdir(path_classify_dir_month):
+                        os.mkdir(path_classify_dir_month)
+                        write_all_log_file(path_classify_dir_month + "경로가 없어 새로 생성 했습니다.")
+
+                    if not os.path.exists(path_classify):
+                        blank_dic = {}
+                        f = open(path_classify, 'wb')
+                        pickle.dump(blank_dic, f)
+                        f.close()
+                        write_all_log_file(path_classify + "파일이 없어 새로 생성합니다.")
+
+
+
+                    file_classified_dic_old = open(path_classify, 'rb')
+                    classified_dic = pickle.load(file_classified_dic_old)
+                    file_classified_dic_old.close()
+
+
+
+
+                    classified_dic[y] = dic_parsing_menu[y]
+
+
+
+                    file_classified_dic_new = open(path_classify, 'wb')
+                    pickle.dump(classified_dic, file_classified_dic_new)
+                    file_classified_dic_new.close()
+
+
+
+                else:
+                    write_all_log_file("조건에 만족하지 않아 날짜별 DB분류에 제외하였습니다.")
+                    write_all_log_file("y[0:2]: {}".format(y[0:2]))
+                    write_all_log_file("key값:{}".format(y))
+                    error_dic[y] = dic_parsing_menu[y]
+
+            write_all_log_file("DB를 날짜별로 분류해 저장하였습니다.")
             
+            if len(error_dic) !=0:
+                write_all_log_file("--<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
+
+#     --------------------------------------------------------------------------------------
+            
+    
+
             if dic_all_menu == dic_all_menu_old:
-                write_all_log_file("기존 DB의 변동사항이 없습니다.")
+                write_all_log_file("기존 DB(all_menu.dat)의 변동사항이 없습니다.")
             else:
-                write_all_log_file("기존 DB가 새롭게 변경되었습니다.")
+                write_all_log_file("기존 DB(all_menu.dat)가 새롭게 변경되었습니다!!!")
 
                 file_change_DB_log = open(path_change_DB_log, 'a')
                 file_change_DB_log.writelines(
@@ -311,12 +381,7 @@ while (True):
                 
                 
 
-            file_all_menu_dat_new = open(path_all_menu_dat, 'wb')
-            pickle.dump(dic_all_menu, file_all_menu_dat_new)
-            write_all_log_file(path_all_menu_dat + "을 새로 작성했습니다.")
-            file_all_menu_dat_new.close()
             
-#             여기에 날짜별로 다시 한번 데이터파일 만들기
 
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
             write_all_log_file("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
@@ -346,13 +411,23 @@ while (True):
 
         sleep(random_time_sleep)
 
-        write_all_log_file("\n====================================================\n")
+        write_all_log_file("\n====================================================")
+        write_all_log_file("====================================================\n")
 
 
 
-    # except Exception as e:
-    #     error = str(e)
-    #     write_all_log_file("\n\n\t***에러가 발생하였습니다ㅠㅠ")
-    #     write_all_log_file(error + "\n")
+    except Exception as e:
+        error = str(e)
+        write_all_log_file("\n\n\t***에러가 발생하였습니다ㅠㅠ")
+        write_all_log_file(error + "\n")
+        write_error_log_file(error + "\n")
+        
+        random_time_sleep = random.randrange(60 * 30)
+        if random_time_sleep < 60:
+            write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
+        else:
+            write_all_log_file(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
 
-    #     write_error_log_file(error + "\n")
+        sleep(random_time_sleep)
+        
+        
