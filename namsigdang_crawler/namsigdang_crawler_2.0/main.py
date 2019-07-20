@@ -202,6 +202,7 @@ while (True):
         sleep(1)
         def_sleep()
 
+#         4번 반복!!
         for i in range(1, 5):
 
             html = BeautifulSoup(driver.page_source, 'lxml')
@@ -226,6 +227,8 @@ while (True):
             writer = csv.writer(file)
             compare_list = []
             regex_temp = re.compile('(?P<year>\d+)년+ (?P<month>\d+)월+ (?P<day>\d+)일')
+            
+            # print("\n\n======================\n" + str(food_list) + "\n\n======================\n\n")
 
             for food_element in food_list:
                 term = ""
@@ -234,56 +237,71 @@ while (True):
                 writer.writerow([term, food_element[1], food_element[2], food_element[3]])  # i.e) 20180910, 아침, 점심, 저녁
                 compare_list.append([term, food_element[1], food_element[2], food_element[3]])
             file.close()
+            
             write_all_log_file("compare_list: " + str(compare_list))
 
             write_all_log_file("\'" + path_this_week_menu_csv + "\' 쓰기 완료")
+            
+            dic_parsing_menu = {}  # dic_menu 파일 초기화
+
 
             backup_file = open(path_backup_menu_csv, 'a', encoding='euc-kr', newline='')
             backup_writer = csv.writer(backup_file)
             for data in compare_list:
                 backup_writer.writerow([data[0], data[1], data[2], data[3]])
+                
+                dic_parsing_menu["eu" + data[0] + "a"] = data[1] # eu20180514a
+                dic_parsing_menu["eu" + data[0] + "b"] = data[2]
+                dic_parsing_menu["eu" + data[0] + "c"] = data[3]
             backup_file.close()
 
             write_all_log_file("\'" + path_backup_menu_csv + "\' 쓰기 완료")
-
-            # dictionary 만들기
-            file = open(path_this_week_menu_csv, 'r', encoding='euc-kr')
-            reader = csv.reader(file)
-
-            dic_parsing_menu = {}  # dic_menu 파일 초기화
-            # eu20180514c
-            for data in reader:
-                dic_parsing_menu["eu" + data[0] + "a"] = data[1]
-                dic_parsing_menu["eu" + data[0] + "b"] = data[2]
-                dic_parsing_menu["eu" + data[0] + "c"] = data[3]
-            file.close()
-
             write_all_log_file("dic_parsing_menu: " + str(dic_parsing_menu))
+
+            
+            
+            # # dictionary 만들기 (this_week_menu.csv 읽어와서 만드는 방법)
+            # file = open(path_this_week_menu_csv, 'r', encoding='euc-kr')
+            # reader = csv.reader(file)
+
+            # dic_parsing_menu = {}  # dic_menu 파일 초기화
+            # # eu20180514c
+            # for data in reader:
+            #     dic_parsing_menu["eu" + data[0] + "a"] = data[1]
+            #     dic_parsing_menu["eu" + data[0] + "b"] = data[2]
+            #     dic_parsing_menu["eu" + data[0] + "c"] = data[3]
+            # file.close()        
+            # write_all_log_file("dic_parsing_menu: " + str(dic_parsing_menu))
+            
 
             file_all_menu_dat_old = open(path_all_menu_dat, 'rb')
             dic_all_menu = pickle.load(file_all_menu_dat_old)
             write_all_log_file(path_all_menu_dat + "을 불러왔습니다.")
             file_all_menu_dat_old.close()
 
-            # dic_all_menu_old = dic_all_menu
+            dic_all_menu_old = dic_all_menu
+            dic_all_menu_old["eu20190802c"] = "테스트로 일부러 변경해봄111"
 
             dic_all_menu.update(dic_parsing_menu)
             write_all_log_file("크롤링한 데이터를 업데이트 했습니다.")
 
-            # if dic_all_menu_old == dic_all_menu:
-            #     write_all_log_file("기존 DB의 변동사항이 없습니다.")
-            # else:
-            #     write_all_log_file("기존 DB가 새롭게 변경되었습니다.")
-            #
-            #     file_change_DB_log = open(path_change_DB_log, 'a')
-            #     file_change_DB_log.writelines(
-            #         "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
-            #     file_change_DB_log.close()
+            print("\n\n=============" + str(i))
+            if dic_all_menu_old == dic_all_menu:
+                write_all_log_file("기존 DB의 변동사항이 없습니다.")
+            else:
+                write_all_log_file("기존 DB가 새롭게 변경되었습니다.")
+            
+                file_change_DB_log = open(path_change_DB_log, 'a')
+                file_change_DB_log.writelines(
+                    "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
+                file_change_DB_log.close()
 
             file_all_menu_dat_new = open(path_all_menu_dat, 'wb')
             pickle.dump(dic_all_menu, file_all_menu_dat_new)
             write_all_log_file(path_all_menu_dat + "을 새로 작성했습니다.")
             file_all_menu_dat_new.close()
+            
+#             여기에 날짜별로 다시 한번 데이터파일 만들기
 
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
             write_all_log_file("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")

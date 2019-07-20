@@ -1330,3 +1330,11 @@
 2019-07-13 10:31:23.961232: Message: 'chromedriver' executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home
 
 
+2019-07-20 07:57:32.002724: must be str, not list
+
+2019-07-20 07:57:47.291226: must be str, not list
+
+2019-07-20 08:20:43.705075: name 'eu20190802c' is not defined
+
+2019-07-20 08:20:57.434014: name 'eu20190802c' is not defined
+
