@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import re
 import pickle
 import random
+import copy
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -43,7 +44,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 1
+    sleep_time_def = 0.01
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -279,29 +280,19 @@ while (True):
             write_all_log_file(path_all_menu_dat + "을 불러왔습니다.")
             file_all_menu_dat_old.close()
 
-            dic_all_menu_old = dic_all_menu.copy()
-            dic_all_menu_old["eu20190802c"] = "테스트로 일부러 변경해봄111"
+            dic_all_menu_old = copy.deepcopy(dic_all_menu)
 
             dic_all_menu.update(dic_parsing_menu)
             write_all_log_file("크롤링한 데이터를 업데이트 했습니다.")
 
-            print("\n\n=============" + str(i))
-
-            for key in sorted(dic_all_menu, reverse=True):
-                # print("\"" + key + "\": \"" + dic_all_menu[key] + "\",")
-                
+        
             
-                if dic_all_menu[key] == dic_all_menu_old[key]:
-                    same = True
-                    
-                else:
-                    same = False
-                    break
-                    
+            
             print("dic_all_menu_old[eu20190802c]>> "+dic_all_menu_old["eu20190802c"])
             print("dic_all_menu[eu20190802c]>> "+dic_all_menu["eu20190802c"])
 
-            if same:
+            
+            if dic_all_menu == dic_all_menu_old:
                 write_all_log_file("기존 DB의 변동사항이 없습니다.")
             else:
                 write_all_log_file("기존 DB가 새롭게 변경되었습니다.")
@@ -310,6 +301,13 @@ while (True):
                 file_change_DB_log.writelines(
                         "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
                 file_change_DB_log.close()
+#                 dic_all_menu 차집합 dic_all_menu_old 데이터를 기록하기
+                write_all_log_file("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
+                
+            
+            
+            
+
                 
                 
 
