@@ -1338,3 +1338,21 @@
 
 2019-07-20 08:20:57.434014: name 'eu20190802c' is not defined
 
+2019-07-20 11:24:12.384673: 'str' object is not callable
+
+2019-07-20 11:24:26.601524: 'str' object is not callable
+
+2019-07-20 11:24:31.613633: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-07-20 11:24:42.312931: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
