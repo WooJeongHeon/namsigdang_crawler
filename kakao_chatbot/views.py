@@ -20,6 +20,8 @@ def keyboard(request):
         'type':'buttons',
         'buttons':['kakao_chatbot_button', '버튼1','버튼2']
     })
+    
+
 
 
 # KAKAO API 에서 메세지 수신 및 자동 응답 API 부분을 보시면 아실수 있듯 keyboard 에서 누른 버튼의 응답을 설정하는 부분입니다

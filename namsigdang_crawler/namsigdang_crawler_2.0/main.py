@@ -360,18 +360,24 @@ while (True):
 
 #     --------------------------------------------------------------------------------------
             
-    
+            dic_all_menu["test"] = "test dif"
 
             if dic_all_menu == dic_all_menu_old:
                 write_all_log_file("기존 DB(all_menu.dat)의 변동사항이 없습니다.")
             else:
-                write_all_log_file("기존 DB(all_menu.dat)가 새롭게 변경되었습니다!!!")
-
+                write_all_log_file("\n***********기존 DB(all_menu.dat)가 새롭게 변경되었습니다!!!***********")
+                keys = "(업데이트메뉴) 차집합 (기존메뉴) [keys]: >>" + str(set(dic_all_menu.keys())-set(dic_all_menu_old.keys()))
+                values = "(업데이트메뉴) 차집합 (기존메뉴) [values]: >>" + str(set(dic_all_menu.values())-set(dic_all_menu_old.values()))
+                write_all_log_file(keys)
+                write_all_log_file(values + "\n********************************************\n")
+        
                 file_change_DB_log = open(path_change_DB_log, 'a')
                 file_change_DB_log.writelines(
                         "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
+                file_change_DB_log.writelines(keys + "\n")
+                file_change_DB_log.writelines(values + "\n" + "\n")
                 file_change_DB_log.close()
-#                 dic_all_menu 차집합 dic_all_menu_old 데이터를 기록하기
+                
                 write_all_log_file("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
                 
             
