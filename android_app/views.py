@@ -22,7 +22,7 @@ def all_menu(request):
     #     'buttons':['android app namsigdang', '버튼1','버튼2']
     # })
     
-    path_all_menu_dat = '/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
+    path_all_menu_dat = './namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
 
     
     file_all_menu_dat = open(path_all_menu_dat, 'rb')
@@ -71,7 +71,7 @@ def classify_menu(request, year, month):
     
     
     
-    path_menu_dat = '/workspace/namsigdang/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/year_{y}/month_{m}/{y}_{m}_menu.dat'.format(y = year, m = month)
+    path_menu_dat = './namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/year_{y}/month_{m}/{y}_{m}_menu.dat'.format(y = year, m = month)
 
 
 

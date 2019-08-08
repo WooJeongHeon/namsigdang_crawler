@@ -103,6 +103,6 @@ def InsertFunc(request):
         print("요청실패")    
 # [출처] [190522] 웹에서 데이터 주고받기, DB에서 읽어오기/ 챗봇프로그래밍/ Django(장고)/ GET,POST/ Session(세션)|작성자 천프로
 
-@bot
-def on_init(request):
-    return {'type': 'text'}
+# @bot
+# def on_init(request):
+#     return {'type': 'text'}

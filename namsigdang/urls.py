@@ -23,13 +23,13 @@ import kakao_chatbot.views
 urlpatterns = [
 #     'admin/' 경로로 요청이 들어오면 admin.site.urls 로 보낸다는 뜻입니다
     path('admin/', admin.site.urls),
-#     kakao API 에서 keyboard 요청이 오면 이것을 3번라인에서 import 해준 views파일의 keyboard부분으로 보내준다는 의미입니다.
-    path('keyboard',kakao_chatbot.views.keyboard),
-#      kakao API 에서 message 요청이 오면 이것을 3번라인에서 import 해준 views파일의 answer 부분으로 보내준다는 의미입니다.
-    path('message',kakao_chatbot.views.answer),
+# #     kakao API 에서 keyboard 요청이 오면 이것을 3번라인에서 import 해준 views파일의 keyboard부분으로 보내준다는 의미입니다.
+#     path('keyboard',kakao_chatbot.views.keyboard),
+# #      kakao API 에서 message 요청이 오면 이것을 3번라인에서 import 해준 views파일의 answer 부분으로 보내준다는 의미입니다.
+#     path('message',kakao_chatbot.views.answer),
     
-    path('post',kakao_chatbot.views.InsertFunc),
-    path('init',kakao_chatbot.views.on_init),
+#     path('post',kakao_chatbot.views.InsertFunc),
+#     path('init',kakao_chatbot.views.on_init),
 
 
     # path('data',android_app.views.print_json_data),

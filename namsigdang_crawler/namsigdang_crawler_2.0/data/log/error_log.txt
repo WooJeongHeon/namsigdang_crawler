@@ -2,3 +2,6 @@
 
 2019-08-08 11:14:36.818819: Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?
 
+2019-08-08 11:20:51.249455: Message: Service ./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver unexpectedly exited. Status code was: 127
+
+
