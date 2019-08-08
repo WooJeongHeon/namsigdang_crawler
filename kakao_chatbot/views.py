@@ -60,3 +60,49 @@ def answer(request):
                 }
  
             })
+    
+from django.http import StreamingHttpResponse
+
+def main_page(request):
+    if request.method=='POST':
+            # received_json_data=json.loads(request.POST['data'])
+            #received_json_data=json.loads(request.body)
+            received_json_data = json.loads(request.body.decode("utf-8"))
+            # return StreamingHttpResponse(received_json_data)
+            return StreamingHttpResponse('it was jpodsajfpdsj request')
+    return StreamingHttpResponse('it was GET request')
+
+
+
+import requests
+
+
+def InsertFunc(request):
+    if request.method == 'GET':
+        print('get 요청처리')
+        print(request)
+        print("======")
+        return JsonResponse({
+                'message': {
+                    'text': "get임get임get임get임get임get임get임get임"
+                },
+                'keyboard': {
+                    'type':'buttons',
+                    'buttons':['버튼1','버튼2']
+                }
+ 
+            })
+                
+
+    elif request.method == 'POST':
+        print('post 요청처리') 
+        #irum = request.POST.get("name")
+        irum = request.POST["name"]
+        return JsonResponse({"post":"succeed"})
+    else: 
+        print("요청실패")    
+# [출처] [190522] 웹에서 데이터 주고받기, DB에서 읽어오기/ 챗봇프로그래밍/ Django(장고)/ GET,POST/ Session(세션)|작성자 천프로
+
+@bot
+def on_init(request):
+    return {'type': 'text'}
