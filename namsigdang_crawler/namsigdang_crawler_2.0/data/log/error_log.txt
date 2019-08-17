@@ -5,3 +5,51 @@
 2019-08-08 11:20:51.249455: Message: Service ./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver unexpectedly exited. Status code was: 127
 
 
+2019-08-17 07:07:37.223919: Message: Service ./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver unexpectedly exited. Status code was: 127
+
+
+2019-08-17 07:08:25.457268: Message: Service ./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver unexpectedly exited. Status code was: 127
+
+
+2019-08-17 07:10:27.737979: Message: Service ./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver unexpectedly exited. Status code was: 127
+
+
+2019-08-17 08:14:14.842369: Message: chrome not reachable
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:17:46.654173: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:21:14.954523: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:22:25.682363: Message: chrome not reachable
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:23:24.913920: Message: chrome not reachable
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:23:50.724289: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+
+2019-08-17 08:25:38.578832: Message: chrome not reachable
+  (Session info: headless chrome=73.0.3683.103)
+  (Driver info: chromedriver=73.0.3683.68 (47787ec04b6e38e22703e856e101e840b65afe72),platform=Linux 4.4.0-1087-aws x86_64)
+
+

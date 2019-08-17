@@ -44,7 +44,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 0.2
+    sleep_time_def = 7
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -144,6 +144,8 @@ while (True):
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
         
+        
+        # WJH_running_server/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver
 
 
         driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options)
@@ -360,8 +362,6 @@ while (True):
 
 #     --------------------------------------------------------------------------------------
             
-            dic_all_menu["test"] = "test dif"
-
             if dic_all_menu == dic_all_menu_old:
                 write_all_log_file("기존 DB(all_menu.dat)의 변동사항이 없습니다.")
             else:
@@ -378,8 +378,7 @@ while (True):
                 file_change_DB_log.writelines(values + "\n" + "\n")
                 file_change_DB_log.close()
                 
-                write_all_log_file("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
-                
+                write_all_log_file("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))               
             
             
             

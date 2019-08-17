@@ -28,7 +28,7 @@ SECRET_KEY = 'f*$((%s74zj0z0t0fbob#l^aqi)ir301%vebb0=0q+1t4w^j8y'
 DEBUG = False
 
 # ALLOWED_HOSTS에서 '*' 을 넣어주세요 모든 ip를 허용하겠다는 뜻입니다.
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['namsigdang.woojeongheon.com']
 
 
 # Application definition
