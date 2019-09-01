@@ -292,6 +292,7 @@ while (True):
             write_all_log_file(path_all_menu_dat + "을 불러왔습니다.")
             file_all_menu_dat_old.close()
 
+#          변동사항 확인하기 위해 dic_all_menu_old로 깊은 복사하여 백업.
             dic_all_menu_old = copy.deepcopy(dic_all_menu)
 
             dic_all_menu.update(dic_parsing_menu)
@@ -315,14 +316,17 @@ while (True):
                     path_classify_dir_month = './data/crawling_menu/year_{}/month_{}'.format(y[2:6], y[6:8])
                     path_classify = './data/crawling_menu/year_{}/month_{}/{}_menu.dat'.format(y[2:6], y[6:8], y[2:6] + "_" + y[6:8])
 
+#                   경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_year):
                         os.mkdir(path_classify_dir_year)
                         write_all_log_file(path_classify_dir_year + "경로가 없어 새로 생성 했습니다.")
-
+                
+#                   경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_month):
                         os.mkdir(path_classify_dir_month)
                         write_all_log_file(path_classify_dir_month + "경로가 없어 새로 생성 했습니다.")
 
+#                 파일이 존재하지 않을 경우 빈 파일 생성
                     if not os.path.exists(path_classify):
                         blank_dic = {}
                         f = open(path_classify, 'wb')
@@ -331,7 +335,7 @@ while (True):
                         write_all_log_file(path_classify + "파일이 없어 새로 생성합니다.")
 
 
-
+#                 날짜별로 분류된 .dat 파일의 딕셔너리를 classified_dic로 저장
                     file_classified_dic_old = open(path_classify, 'rb')
                     classified_dic = pickle.load(file_classified_dic_old)
                     file_classified_dic_old.close()
@@ -342,7 +346,7 @@ while (True):
                     classified_dic[y] = dic_parsing_menu[y]
 
 
-
+#                 새로 .dat에 저장
                     file_classified_dic_new = open(path_classify, 'wb')
                     pickle.dump(classified_dic, file_classified_dic_new)
                     file_classified_dic_new.close()
@@ -393,8 +397,8 @@ while (True):
             sleep(1)
             def_sleep()
 
+#        all_menu.txt파일 새로 생성
         str_all_menu = str(dic_all_menu)
-
         file_all_menu_txt = open(path_all_menu_txt, 'w')
         file_all_menu_txt.writelines(str_all_menu)
         file_all_menu_txt.close()
