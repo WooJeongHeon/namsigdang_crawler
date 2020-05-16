@@ -1,1 +1,1 @@
-# private_namsigdang
+# namsigdang
