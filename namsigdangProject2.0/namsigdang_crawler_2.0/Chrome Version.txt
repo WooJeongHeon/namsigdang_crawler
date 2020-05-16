@@ -1,0 +1,3 @@
+크롬 버전보기 리눅스 명령어: google-chrome --version
+현재 크롬 사용 버전: Google Chrome 73.0.3683.103 
+참고 사이트: https://christopher.su/2015/selenium-chromedriver-ubuntu/
