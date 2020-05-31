@@ -1,7 +1,8 @@
-# namsigdang
+# namsigdang(남식당)
 
 
 ## 사용법 (Getting Started)
+
 
 ### namsigdang Django server
 
@@ -32,9 +33,10 @@ $ python3 manage.py runserver 0.0.0.0:8080
 $ python3 manage.py runserver 0:8080
 ```
 
+---
+
 ### namsigdang crawler
 
-외부접속 허용
 ```bash
 $ nohup python3 main.py &
 ```
