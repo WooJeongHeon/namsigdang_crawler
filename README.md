@@ -18,7 +18,8 @@ $ pip3 install beautifulsoup4
 ```
 
 ```bash
-$ 
+$ pip3 install lxml
+
 ```
 
 ## chrome 설치
@@ -46,15 +47,18 @@ $ sudo apt-get install -f
 
 
 참고 사이트
-```bash
-$ https://christopher.su/2015/selenium-chromedriver-ubuntu/
+```
+https://christopher.su/2015/selenium-chromedriver-ubuntu/
 ```
 
 ## Django 설치
 
 BackEnd framework
 
+```bash
 $ pip3 install Django
+
+```
 
 
 
@@ -66,6 +70,20 @@ $ pip3 install Django
 가상환경 실행
 ```bash
 $ source venv/bin/activate
+```
+
+DB 생성
+
+```bash
+$ python3 manage.py makemigrations
+
+```
+
+DB migrate
+
+```bash
+$ python3 manage.py migrate
+
 ```
 
 BackEnd 서버 실행

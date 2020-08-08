@@ -22,7 +22,7 @@ def all_menu(request):
     #     'buttons':['android app namsigdang', '버튼1','버튼2']
     # })
     
-    path_all_menu_dat = './namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/all_menu.dat'
+    path_all_menu_dat = './namsigdang_crawler/data/crawling_menu/all_menu.dat'
 
     
     file_all_menu_dat = open(path_all_menu_dat, 'rb')

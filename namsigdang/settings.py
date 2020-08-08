@@ -25,10 +25,10 @@ SECRET_KEY = 'f*$((%s74zj0z0t0fbob#l^aqi)ir301%vebb0=0q+1t4w^j8y'
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG는 디버그 모드입니다 True로 사용시 서버 로그에서 오류 발생시 원인이 출력됩니다
 # False 설정시 오류코드만 출력됩니다 저는 False로 해서 삽질한 경험이 있어서 True모드로 설정합니다.
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS에서 '*' 을 넣어주세요 모든 ip를 허용하겠다는 뜻입니다.
-ALLOWED_HOSTS = ['namsigdang.woojeongheon.com']
+ALLOWED_HOSTS = ['namsigdang.woojeongheon.com', 'namsigdangapp.run.goorm.io']
 
 
 # Application definition

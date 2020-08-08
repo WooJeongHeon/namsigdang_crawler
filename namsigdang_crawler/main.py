@@ -411,7 +411,7 @@ while (True):
         write_all_log_file("1시간 휴식..")
         sleep(60 * 60)
 
-        random_time_sleep = random.randrange(60 * 60)
+        random_time_sleep = random.randrange(60 * 60 * 10)
 
         if random_time_sleep < 60:
             write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
@@ -431,7 +431,7 @@ while (True):
         write_all_log_file(error + "\n")
         write_error_log_file(error + "\n")
         
-        random_time_sleep = random.randrange(60 * 30)
+        random_time_sleep = random.randrange(60 * 60 * 4)
         if random_time_sleep < 60:
             write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
         else:
