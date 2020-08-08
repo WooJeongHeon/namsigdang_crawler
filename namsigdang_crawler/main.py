@@ -44,7 +44,7 @@ def write_error_log_file(logText):
 
 
 def def_sleep():
-    sleep_time_def = 7
+    sleep_time_def = 8
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -91,7 +91,7 @@ while (True):
         path_dir_data = './data'
         path_dir_data_log = './data/log'
         path_dir_data_all_log = './data/log/all_log'
-        path_all_log = './data/log/all_log/all_log(' + my_date + ').txt'
+        path_all_log = './data/log/all_log/'+my_date[0:4]+'_year/'+my_date[5:7]+'_month/all_log(' + my_date + ').txt'
         path_error_log = './data/log/error_log.txt'
         path_change_DB_log = './data/log/change_DB_log.txt'
 
@@ -104,11 +104,14 @@ while (True):
         path_dir_data_account = './data/account'
         path_account = './data/account/account.txt'
 
-        make_path_dir(path_dir_data, False)
+        make_path_dir(path_dir_data, False) # 아직 로그 경로가 없어 로그생성 False
         make_path_dir(path_dir_data_log, False)
-        make_path_dir(path_dir_data_all_log, True)
+        make_path_dir(path_dir_data_all_log, False)
+        make_path_dir('./data/log/all_log/'+my_date[0:4]+'_year', False)
+        make_path_dir('./data/log/all_log/'+my_date[0:4]+'_year/'+my_date[5:7]+'_month', True)
         make_path_dir(path_dir_data_account, True)
         make_path_dir(path_dir_data_crawling_menu, True)
+        
 
         make_path_file(path_all_log)
         make_path_file(path_error_log)
