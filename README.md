@@ -1,15 +1,14 @@
 # namsigdang(남식당)
 
-## 설치
+## 크롤러 파이썬 모듈 설치
 
 ```bash
 $ apt-get install python3-pip
 
 ```
 
-
 ```bash
-$ pip install Selenium
+$ pip3 install Selenium
 ```
 
 ```bash
@@ -44,7 +43,6 @@ $ dpkg -i google-chrome-stable_current_amd64.deb
 $ sudo apt-get install -f
 
 ```
-
 
 참고 사이트
 ```
