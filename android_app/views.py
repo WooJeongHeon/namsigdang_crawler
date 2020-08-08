@@ -71,7 +71,7 @@ def classify_menu(request, year, month):
     
     
     
-    path_menu_dat = './namsigdang_crawler/namsigdang_crawler_2.0/data/crawling_menu/year_{y}/month_{m}/{y}_{m}_menu.dat'.format(y = year, m = month)
+    path_menu_dat = './namsigdang_crawler/data/crawling_menu/year_{y}/month_{m}/{y}_{m}_menu.dat'.format(y = year, m = month)
 
 
 
