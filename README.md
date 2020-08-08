@@ -2,13 +2,60 @@
 
 ## 설치
 
-apt-get install python3-pip
+```bash
+$ apt-get install python3-pip
+
+```
+
 
 ```bash
 $ pip install Selenium
 ```
 
-pip3 install beautifulsoup4
+```bash
+$ pip3 install beautifulsoup4
+
+```
+
+```bash
+$ 
+```
+
+## chrome 설치
+
+크롬 버전보기 리눅스 명령어: 
+
+```bash
+$ google-chrome --version
+```
+
+현재 크롬 사용 버전:  
+
+```
+Google Chrome 73.0.3683.103
+```
+
+크롬 설치
+
+```bash
+$ cd namsigdang/namsigdang_crawler/setup_files
+$ dpkg -i google-chrome-stable_current_amd64.deb
+$ sudo apt-get install -f
+
+```
+
+
+참고 사이트
+```bash
+$ https://christopher.su/2015/selenium-chromedriver-ubuntu/
+```
+
+## Django 설치
+
+BackEnd framework
+
+$ pip3 install Django
+
 
 
 ## 사용법 (Getting Started)
