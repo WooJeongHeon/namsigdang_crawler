@@ -39,7 +39,7 @@ Google Chrome 73.0.3683.103
 
 ```bash
 $ cd namsigdang/namsigdang_crawler/setup_files
-$ dpkg -i google-chrome-stable_current_amd64.deb
+$ sudo dpkg -i google-chrome-stable_current_amd64.deb
 $ sudo apt-get install -f
 
 ```
