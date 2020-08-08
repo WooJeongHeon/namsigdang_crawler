@@ -116,5 +116,6 @@ $ nohup python3 main.py &
 
 #### 파일 소개
 main.py : 메인 크롤러
+
 classify_data_in_date.py : namsigdang/namsigdang_crawler/data/crawling_menu/all_menu.dat으로부터 년, 월로 분류하여 namsigdang/namsigdang_crawler/data/crawling_menu에 year_2020/month_08/2020_08_menu.dat와 같이 저장. (Django App API에서 해당 Data 사용)
 
