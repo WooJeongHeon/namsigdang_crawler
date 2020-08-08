@@ -1,5 +1,15 @@
 # namsigdang(남식당)
 
+## 설치
+
+apt-get install python3-pip
+
+```bash
+$ pip install Selenium
+```
+
+pip3 install beautifulsoup4
+
 
 ## 사용법 (Getting Started)
 

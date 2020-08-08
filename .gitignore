@@ -1,2 +1,3 @@
-namsigdang_crawler/namsigdang_crawler_2.0/data/
+namsigdang_crawler/data
 *.pyc
+nohup.out
