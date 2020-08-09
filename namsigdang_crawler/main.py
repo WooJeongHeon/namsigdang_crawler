@@ -413,15 +413,22 @@ while (True):
 
         write_all_log_file("1시간 휴식..")
         sleep(60 * 60)
+        write_all_log_file("/")
 
         random_time_sleep = random.randrange(60 * 60 * 10)
 
         if random_time_sleep < 60:
             write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
-        else:
+            
+        elif random_time_sleep < 60*60:
             write_all_log_file(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
+            
+        else:
+            write_all_log_file(str(random_time_sleep // (60*60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
+
 
         sleep(random_time_sleep)
+        write_all_log_file("/")
 
         write_all_log_file("\n====================================================")
         write_all_log_file("====================================================\n")
@@ -434,12 +441,18 @@ while (True):
         write_all_log_file(error + "\n")
         write_error_log_file(error + "\n")
         
-        random_time_sleep = random.randrange(60 * 60 * 4)
+        random_time_sleep = random.randrange(60 * 60 * 5)
+
         if random_time_sleep < 60:
             write_all_log_file(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
+            
+        elif random_time_sleep < 60*60:
+            write_all_log_file(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)-에러휴식")
+            
         else:
-            write_all_log_file(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
+            write_all_log_file(str(random_time_sleep // (60*60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)-에러휴식")
 
         sleep(random_time_sleep)
+        write_all_log_file("/")
         
         
