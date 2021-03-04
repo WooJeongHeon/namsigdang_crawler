@@ -237,6 +237,9 @@ while (True):
                     if food__ != '\n':
                         for tag in tag_list:
                             food__ = re.sub(tag, '', str(food__))
+                            
+                        food__ = re.sub('&amp;', '&', str(food__)) # &amp를 &로 변환
+                        
                         temp_list.append(food__)
                 food_list.append(temp_list)
 
