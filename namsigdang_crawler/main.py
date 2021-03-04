@@ -141,7 +141,7 @@ while (True):
         write_all_log_file("데이터 수집을 시작합니다.")
 
         options = webdriver.ChromeOptions()
-        options.add_argument('headless') # 창 
+        options.add_argument('headless') # 창 숨기기
         options.add_argument('window-size=1920x1080')
         options.add_argument("--disable-gpu")
         options.add_argument('--disable-extensions')
