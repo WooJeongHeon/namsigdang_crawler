@@ -141,7 +141,7 @@ while (True):
         write_all_log_file("데이터 수집을 시작합니다.")
 
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        options.add_argument('headless') # 창 
         options.add_argument('window-size=1920x1080')
         options.add_argument("--disable-gpu")
         options.add_argument('--disable-extensions')
@@ -185,32 +185,34 @@ while (True):
         sleep(1)
         def_sleep()
 
-        WebDriverWait(driver, 5).until(EC.alert_is_present())  # (팝업창) 5초
-        driver.switch_to.alert.accept()  # 팝업창 확인 클릭
-        write_all_log_file("팝업창 확인 클릭 완료")
+        # WebDriverWait(driver, 5).until(EC.alert_is_present())  # (팝업창) 5초
+        # driver.switch_to.alert.accept()  # 팝업창 확인 클릭
+        # write_all_log_file("팝업창 확인 클릭 완료")
 
-        write_all_log_file("3초 쉬기..")
-        sleep(3)
+        # write_all_log_file("3초 쉬기..")
+        # sleep(3)
 
-        def_sleep()
+        # def_sleep()
 
-        # 리눅스에선 생략
         # driver.find_element_by_xpath('//*[@id="sidebarButton"]/span').click()  # 메뉴 클릭 완료
         # write_all_log_file("메뉴 클릭 완료")
         # sleep(1)
         # def_sleep()
 
-        driver.find_element_by_xpath('//*[@id="left-meun"]/div[1]/ul/li[3]/a/span').click()  # 학생생활지원 클릭 완료
-        write_all_log_file("\'학생생활지원\' 클릭 완료")
-        sleep(1)
-        def_sleep()
+        # driver.find_element_by_xpath('//*[@id="left-meun"]/div[1]/ul/li[3]/a/span').click()  # 학생생활지원 클릭 완료
+        # write_all_log_file("\'학생생활지원\' 클릭 완료")
+        # sleep(1)
+        # def_sleep()
 
-        driver.find_element_by_xpath('//*[@id="li_menu_Q0102"]/a').click()  # 식단표 클릭 완료
-        write_all_log_file("\'식단표\' 클릭 완료")
-        def_sleep()
+        # driver.find_element_by_xpath('//*[@id="li_menu_Q0102"]/a').click()  # 식단표 클릭 완료
+        # write_all_log_file("\'식단표\' 클릭 완료")
+        # def_sleep()
 
         # driver.find_element_by_xpath('/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
         # driver.implicitly_wait(1)
+        
+        driver.get("http://portal.ndhs.or.kr/studentLifeSupport/carte/list")
+        write_all_log_file("식단표 페이지로 이동했습니다.")
 
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
         write_all_log_file("\'이전주 보기\' 클릭 완료")
