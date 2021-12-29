@@ -1,3 +1,6 @@
-namsigdang_crawler/data
 *.pyc
+.idea/*
+venv/*
 nohup.out
+
+namsigdang_crawler/data
