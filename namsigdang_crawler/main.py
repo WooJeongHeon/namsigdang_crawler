@@ -68,26 +68,6 @@ while (True):
         my_date = str(my_date) + "-" + str(day_of_the_week)
         today_date = str(datetime.datetime.now())  # 2019-04-07 16:45:15.103445
 
-        # Window path
-
-        # path_dir_data = 'data'
-        # path_dir_data_log = 'data\\log'
-        # path_dir_data_all_log = 'data\\log\\all_log'
-        # path_all_log = 'data\\log\\all_log\\all_log(' + my_date + ').txt'
-        # path_error_log = 'data\\log\\error_log.txt'
-        # path_change_DB_log = 'data\\log\\change_DB_log.txt'
-        #
-        # path_dir_data_crawling_menu = 'data\\crawling_menu'
-        # path_this_week_menu_csv = 'data\\crawling_menu\\this_week_menu.csv'
-        # path_backup_menu_csv = 'data\\crawling_menu\\backup_menu.csv'
-        # path_all_menu_txt = 'data\\crawling_menu\\all_menu.txt'
-        # path_all_menu_dat = 'data\\crawling_menu\\all_menu.dat'
-        #
-        # path_dir_data_account = 'data\\account'
-        # path_account = 'data\\account\\account.txt'
-
-        # Linux Server path
-
         path_dir_data = './data'
         path_dir_data_log = './data/log'
         path_dir_data_all_log = './data/log/all_log'
@@ -146,8 +126,6 @@ while (True):
         options.add_argument("--disable-gpu")
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
-
-        # WJH_running_server/namsigdang/namsigdang_crawler/namsigdang_crawler_2.0/setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver
 
         # driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
         driver = webdriver.Chrome('./setup_files/chromedriver_win32/chromedriver.exe')  # 윈도우
@@ -216,7 +194,7 @@ while (True):
         sleep(1)
         def_sleep()
 
-        #         4번 반복!!
+        # 4번 반복!!
         for i in range(1, 5):
 
             html = BeautifulSoup(driver.page_source, 'lxml')
@@ -314,17 +292,17 @@ while (True):
                     path_classify = './data/crawling_menu/year_{}/month_{}/{}_menu.dat'.format(y[2:6], y[6:8],
                                                                                                y[2:6] + "_" + y[6:8])
 
-                    #                   경로가 존재하지 않으면 새로 생성
+                    # 경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_year):
                         os.mkdir(path_classify_dir_year)
                         write_all_log_file(path_classify_dir_year + "경로가 없어 새로 생성 했습니다.")
 
-                    #                   경로가 존재하지 않으면 새로 생성
+                    # 경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_month):
                         os.mkdir(path_classify_dir_month)
                         write_all_log_file(path_classify_dir_month + "경로가 없어 새로 생성 했습니다.")
 
-                    #                 파일이 존재하지 않을 경우 빈 파일 생성
+                    # 파일이 존재하지 않을 경우 빈 파일 생성
                     if not os.path.exists(path_classify):
                         blank_dic = {}
                         f = open(path_classify, 'wb')
@@ -332,14 +310,14 @@ while (True):
                         f.close()
                         write_all_log_file(path_classify + "파일이 없어 새로 생성합니다.")
 
-                    #                 날짜별로 분류된 .dat 파일의 딕셔너리를 classified_dic로 저장
+                    # 날짜별로 분류된 .dat 파일의 딕셔너리를 classified_dic로 저장
                     file_classified_dic_old = open(path_classify, 'rb')
                     classified_dic = pickle.load(file_classified_dic_old)
                     file_classified_dic_old.close()
 
                     classified_dic[y] = dic_parsing_menu[y]
 
-                    #                 새로 .dat에 저장
+                    # 새로 .dat에 저장
                     file_classified_dic_new = open(path_classify, 'wb')
                     pickle.dump(classified_dic, file_classified_dic_new)
                     file_classified_dic_new.close()
