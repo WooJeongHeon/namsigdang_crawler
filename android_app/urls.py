@@ -1,4 +1,3 @@
-    
 """my_site_prj URL Configuration
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,13 +15,10 @@ Including another URLconf
 from django.urls import path, include
 from . import views
 
-
 urlpatterns = [
-    path('<int:year>/<int:month>/', views.classify_menu), # <int:year>/: 정수값을 입력받고 입력받은 값을 year 함
-    # path('1', views.asdf), #1111111
+    path('<int:year>/<int:month>/', views.classify_menu),  # <int:year>/: 정수값을 입력받고 입력받은 값을 year라고 함
 
     path('all', views.all_menu),
-    path('', views.all_menu), # 주소 뒤에 아무것도 안오면views.all_menu로 가라
+    path('', views.all_menu),  # 파라미터가 없으면 views.all_menu에서 처리
 
-         ]
-         
+]

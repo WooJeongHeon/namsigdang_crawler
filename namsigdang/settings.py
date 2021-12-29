@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -23,15 +22,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f*$((%s74zj0z0t0fbob#l^aqi)ir301%vebb0=0q+1t4w^j8y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG는 디버그 모드입니다 True로 사용시 서버 로그에서 오류 발생시 원인이 출력됩니다
-# False 설정시 오류코드만 출력됩니다 저는 False로 해서 삽질한 경험이 있어서 True모드로 설정합니다.
-DEBUG = False
 
-# ALLOWED_HOSTS에서 '*' 을 넣어주세요 모든 ip를 허용하겠다는 뜻입니다.
-# ALLOWED_HOSTS = ['namsigdang.woojeongheon.com', 'namsigdangapp.run.goorm.io']
-ALLOWED_HOSTS = ['localhost']
+DEBUG = True
+# DEBUG = False
 
 
+# ALLOWED_HOSTS = ['namsigdang.woojeongheon.com']
+# ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -42,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'android_app', # 어플리케이션 이름을 추가해주세요 저는 위에서 android_app으로 만들었기때문에 android_app을 넣었습니다.
-    'kakao_chatbot',
+    'android_app',  # 생성한 어플리케이션 (android_app)
+    'kakao_chatbot',  # 생성한 어플리케이션 (kakao_chatbot)
 ]
 
 MIDDLEWARE = [
@@ -76,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'namsigdang.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -86,7 +83,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -106,7 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -120,7 +115,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
