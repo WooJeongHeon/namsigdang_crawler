@@ -1,14 +1,15 @@
-from time import sleep
 import calendar
 import csv
 import datetime
 import os
-from selenium import webdriver
-from bs4 import BeautifulSoup
 import re
 import pickle
 import random
 import copy
+from time import sleep
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
