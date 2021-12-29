@@ -29,7 +29,7 @@ $ sudo apt-get install -f
 https://christopher.su/2015/selenium-chromedriver-ubuntu/
 ```
 
-## 사용법 (Getting Started)
+## Getting Started
 
 ### namsigdang Django server
 
