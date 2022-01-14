@@ -11,15 +11,22 @@ def slack_msg(msg):
                   data={"channel": channel, "text": msg})
 
 
-def write_logs(logText):
-    print(str(datetime.datetime.now()) + ": " + logText)
+class WriteLogs:
 
-    logfile = open(path_all_log, 'a')
-    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
-    logfile.close()
+    def __init__(self, log_path, logText):
+        self.log_path = log_path
+        self.logText = logText
+
+    def __str__(self):
+        return f"{datetime.datetime.now()}: {self.logText}"
+
+    def write_to_file(self):
+        logfile = open(self.log_path, 'a')
+        logfile.writelines(str(datetime.datetime.now()) + ": " + self.logText + "\n")
+        logfile.close()
 
 
-def write_error_log(logText):
-    logfile = open(path_error_log, 'a')
-    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
-    logfile.close()
+def write_log(log_text, log_file=path_all_log):
+    write_logs = WriteLogs(log_file, log_text)
+    print(write_logs)
+    write_logs.write_to_file()

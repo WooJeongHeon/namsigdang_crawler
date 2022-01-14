@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, path_error_log, \
     path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
     path_all_menu_dat, path_dir_data_account, path_account
-from make_log import write_logs, write_error_log, slack_msg
+from make_log import write_log, slack_msg
 from environment_composition import create_env, check_all_menu_dat, check_account
 from my_date import my_date, day_of_the_week, today_date
 
@@ -25,9 +25,9 @@ def def_sleep():
     sleep_time_def = 1
 
     if sleep_time_def < 60:
-        write_logs(str(sleep_time_def) + "초 쉬기")
+        write_log(str(sleep_time_def) + "초 쉬기")
     else:
-        write_logs(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
+        write_log(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
 
     sleep(sleep_time_def)
 
@@ -48,7 +48,7 @@ while (True):
 
         my_id, my_pw = check_account()
 
-        write_logs(f"데이터 수집을 시작합니다. ({repeat_time}회)")
+        write_log(f"데이터 수집을 시작합니다. ({repeat_time}회)")
 
         options = webdriver.ChromeOptions()
         options.add_argument('headless')  # 창 숨기기
@@ -59,13 +59,13 @@ while (True):
 
         # driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
         driver = webdriver.Chrome('./setup_files/chromedriver_win32/chromedriver.exe')  # 윈도우
-        write_logs("크롬 드라이버 실행 완료")
+        write_log("크롬 드라이버 실행 완료")
 
-        write_logs("1초 쉬기..")
+        write_log("1초 쉬기..")
         sleep(1)
 
         driver.get("http://portal.ndhs.or.kr/index")
-        write_logs("남도학숙 사이트에 들어갔습니다.")
+        write_log("남도학숙 사이트에 들어갔습니다.")
 
         driver.implicitly_wait(3)
         def_sleep()
@@ -76,16 +76,16 @@ while (True):
 
         stuUserId = driver.find_element_by_id('stuUserId')
         stuUserId.send_keys(my_id)
-        write_logs("아이디 입력 완료")
+        write_log("아이디 입력 완료")
         def_sleep()
 
         stuPassword = driver.find_element_by_id('stuPassword')
         stuPassword.send_keys(my_pw)
-        write_logs("비밀번호 입력 완료")
+        write_log("비밀번호 입력 완료")
         def_sleep()
 
         driver.find_element_by_xpath('//*[@id="student"]/div/div[2]/button').click()  # Login 버튼 클릭
-        write_logs("로그인 버튼 클릭 완료")
+        write_log("로그인 버튼 클릭 완료")
 
         sleep(1)
         def_sleep()
@@ -117,10 +117,10 @@ while (True):
         # driver.implicitly_wait(1)
 
         driver.get("http://portal.ndhs.or.kr/studentLifeSupport/carte/list")
-        write_logs("식단표 페이지로 이동했습니다.")
+        write_log("식단표 페이지로 이동했습니다.")
 
         driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
-        write_logs("\'이전주 보기\' 클릭 완료")
+        write_log("\'이전주 보기\' 클릭 완료")
         sleep(1)
         def_sleep()
 
@@ -130,7 +130,7 @@ while (True):
             html = BeautifulSoup(driver.page_source, 'lxml')
 
             food = html.find_all('tr', attrs={'style': 'height:80px'})
-            write_logs("{'style': 'height:80px'} 검색 완료")
+            write_log("{'style': 'height:80px'} 검색 완료")
 
             tag_list = ['</th>', '<td>', '<tr style="height:80px">', '</tr>', '</td>', '<th>',
                         '<th style="color:red;">',
@@ -165,7 +165,7 @@ while (True):
 
             # write_all_log_file("compare_list: " + str(compare_list))
 
-            write_logs("\'" + path_this_week_menu_csv + "\' 쓰기 완료")
+            write_log("\'" + path_this_week_menu_csv + "\' 쓰기 완료")
 
             dic_parsing_menu = {}  # dic_menu 파일 초기화
 
@@ -179,8 +179,8 @@ while (True):
                 dic_parsing_menu["eu" + data[0] + "c"] = data[3]
             backup_file.close()
 
-            write_logs("\'" + path_backup_menu_csv + "\' 쓰기 완료")
-            write_logs("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
+            write_log("\'" + path_backup_menu_csv + "\' 쓰기 완료")
+            write_log("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
 
             # # dictionary 만들기 (this_week_menu.csv 읽어와서 만드는 방법)
             # file = open(path_this_week_menu_csv, 'r', encoding='euc-kr')
@@ -197,18 +197,18 @@ while (True):
 
             file_all_menu_dat_old = open(path_all_menu_dat, 'rb')
             dic_all_menu = pickle.load(file_all_menu_dat_old)
-            write_logs(path_all_menu_dat + "을 불러왔습니다.")
+            write_log(path_all_menu_dat + "을 불러왔습니다.")
             file_all_menu_dat_old.close()
 
             #          변동사항 확인하기 위해 dic_all_menu_old로 깊은 복사하여 백업.
             dic_all_menu_old = copy.deepcopy(dic_all_menu)
 
             dic_all_menu.update(dic_parsing_menu)
-            write_logs("크롤링한 데이터를 업데이트 했습니다.")
+            write_log("크롤링한 데이터를 업데이트 했습니다.")
 
             file_all_menu_dat_new = open(path_all_menu_dat, 'wb')
             pickle.dump(dic_all_menu, file_all_menu_dat_new)
-            write_logs(path_all_menu_dat + "을 새로 작성했습니다.")
+            write_log(path_all_menu_dat + "을 새로 작성했습니다.")
             file_all_menu_dat_new.close()
 
             # --------------------------------------------------------------------------------------
@@ -225,12 +225,12 @@ while (True):
                     # 경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_year):
                         os.mkdir(path_classify_dir_year)
-                        write_logs(path_classify_dir_year + "경로가 없어 새로 생성 했습니다.")
+                        write_log(path_classify_dir_year + "경로가 없어 새로 생성 했습니다.")
 
                     # 경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_month):
                         os.mkdir(path_classify_dir_month)
-                        write_logs(path_classify_dir_month + "경로가 없어 새로 생성 했습니다.")
+                        write_log(path_classify_dir_month + "경로가 없어 새로 생성 했습니다.")
 
                     # 파일이 존재하지 않을 경우 빈 파일 생성
                     if not os.path.exists(path_classify):
@@ -238,7 +238,7 @@ while (True):
                         f = open(path_classify, 'wb')
                         pickle.dump(blank_dic, f)
                         f.close()
-                        write_logs(path_classify + "파일이 없어 새로 생성합니다.")
+                        write_log(path_classify + "파일이 없어 새로 생성합니다.")
 
                     # 날짜별로 분류된 .dat 파일의 딕셔너리를 classified_dic로 저장
                     file_classified_dic_old = open(path_classify, 'rb')
@@ -255,27 +255,27 @@ while (True):
 
 
                 else:
-                    write_logs("조건에 만족하지 않아 날짜별 DB분류에 제외하였습니다.")
-                    write_logs("y[0:2]: {}".format(y[0:2]))
-                    write_logs("key값:{}".format(y))
+                    write_log("조건에 만족하지 않아 날짜별 DB분류에 제외하였습니다.")
+                    write_log("y[0:2]: {}".format(y[0:2]))
+                    write_log("key값:{}".format(y))
                     error_dic[y] = dic_parsing_menu[y]
 
-            write_logs("DB를 날짜별로 분류해 저장하였습니다.")
+            write_log("DB를 날짜별로 분류해 저장하였습니다.")
 
             if len(error_dic) != 0:
-                write_logs("--<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
+                write_log("--<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
 
             #     --------------------------------------------------------------------------------------
 
             if dic_all_menu == dic_all_menu_old:
-                write_logs("기존 DB(all_menu.dat)의 변동사항이 없습니다.")
+                write_log("기존 DB(all_menu.dat)의 변동사항이 없습니다.")
             else:
-                write_logs("\n***********기존 DB(all_menu.dat)가 새롭게 변경되었습니다!!!***********")
+                write_log("\n***********기존 DB(all_menu.dat)가 새롭게 변경되었습니다!!!***********")
                 keys = "(업데이트메뉴) 차집합 (기존메뉴) [keys]: >>" + str(set(dic_all_menu.keys()) - set(dic_all_menu_old.keys()))
                 values = "(업데이트메뉴) 차집합 (기존메뉴) [values]: >>" + str(
                     set(dic_all_menu.values()) - set(dic_all_menu_old.values()))
-                write_logs(keys)
-                write_logs(values + "\n********************************************\n")
+                write_log(keys)
+                write_log(values + "\n********************************************\n")
 
                 file_change_DB_log = open(path_change_DB_log, 'a')
                 file_change_DB_log.writelines(
@@ -284,10 +284,10 @@ while (True):
                 file_change_DB_log.writelines(values + "\n" + "\n")
                 file_change_DB_log.close()
 
-                write_logs("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
+                write_log("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
 
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
-            write_logs("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
+            write_log("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
             sleep(1)
             def_sleep()
 
@@ -296,54 +296,54 @@ while (True):
         file_all_menu_txt = open(path_all_menu_txt, 'w')
         file_all_menu_txt.writelines(str_all_menu)
         file_all_menu_txt.close()
-        write_logs(path_all_menu_txt + "를 새로 생성하였습니다.")
+        write_log(path_all_menu_txt + "를 새로 생성하였습니다.")
 
-        write_logs("[" + str(repeat_time) + "회째]: 성공적으로 크롤링을 마쳤습니다!!")
+        write_log("[" + str(repeat_time) + "회째]: 성공적으로 크롤링을 마쳤습니다!!")
 
         driver.close()
 
-        write_logs("1시간 휴식..")
+        write_log("1시간 휴식..")
         sleep(60 * 60)
-        write_logs("/")
+        write_log("/")
 
         random_time_sleep = random.randrange(60 * 60 * 10)
 
         if random_time_sleep < 60:
-            write_logs(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
+            write_log(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과)")
 
         elif random_time_sleep < 60 * 60:
-            write_logs(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
+            write_log(str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
 
         else:
-            write_logs(str(random_time_sleep // (60 * 60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(
+            write_log(str(random_time_sleep // (60 * 60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(
                 random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)")
 
         sleep(random_time_sleep)
-        write_logs("/")
+        write_log("/")
 
-        write_logs("\n====================================================")
-        write_logs("====================================================\n")
+        write_log("\n====================================================")
+        write_log("====================================================\n")
 
 
 
     except Exception as e:
         error = str(e)
-        write_logs("\n\n\t***에러가 발생하였습니다ㅠㅠ")
-        write_logs(error + "\n")
-        write_error_log(error + "\n")
+        write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ")
+        write_log(error + "\n")
+        write_log(log_text=error + "\n", log_file=path_error_log)
 
         random_time_sleep = random.randrange(60 * 60 * 5)
 
         if random_time_sleep < 60:
-            write_logs(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
+            write_log(str(random_time_sleep) + "초 추가로 휴식.. (랜덤 결과) - 에러 휴식")
 
         elif random_time_sleep < 60 * 60:
-            write_logs(
+            write_log(
                 str(random_time_sleep // 60) + "분 " + str(random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)-에러휴식")
 
         else:
-            write_logs(str(random_time_sleep // (60 * 60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(
+            write_log(str(random_time_sleep // (60 * 60)) + "시간 " + str(random_time_sleep // 60) + "분 " + str(
                 random_time_sleep % 60) + "초 추가로 휴식.. (랜덤 결과)-에러휴식")
 
         sleep(random_time_sleep)
-        write_logs("/")
+        write_log("/")
