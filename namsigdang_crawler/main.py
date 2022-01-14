@@ -288,17 +288,18 @@ while (True):
                 write_log(keys)
                 write_log(values + "\n********************************************\n")
 
-                write_log(log_text=f"기존 DB가 새롭게 변경되었습니다.\n변경 요일: {day_of_the_week}\n{keys}\n{values}\n\n",
+                write_log(log_text=f"기존 DB가 새롭게 변경되었습니다.\n변경 요일: {day_of_the_week()}\n{keys}\n{values}\n\n",
                           log_files=[path_all_log, path_change_DB_log], send_slack=True)
 
                 # firestore에 메뉴 변동사항 저장
                 try:
 
                     fb_ref_eun_update_info = fb_db.collection('event').document(
-                        "Eunpyeong_menu_update_info").collection(f'year_{today_year}').document(f'month_{today_month}')
+                        "Eunpyeong_menu_update_info").collection(f'year_{today_year()}').document(
+                        f'month_{today_month()}')
                     fb_ref_eun_update_info.set(
-                        {today_date: {"day_of_the_week": day_of_the_week, "update_keys": keys,
-                                                        "update_values": values}}, merge=True)
+                        {today_date(): {"day_of_the_week()": day_of_the_week(), "update_keys": keys,
+                                        "update_values": values}}, merge=True)
 
                     write_log("firestore에 변동사항 정보를 기록하였습니다.")
 
