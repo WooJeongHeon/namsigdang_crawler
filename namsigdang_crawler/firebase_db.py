@@ -17,4 +17,4 @@ fb_db = firestore.client()
 #     'test1': 1,
 #     'test2': 2,
 #     'test3': "test3"
-# })
+# }, merge=True)

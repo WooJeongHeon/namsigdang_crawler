@@ -17,3 +17,5 @@ path_all_menu_dat = './data/crawling_menu/all_menu.dat'
 
 path_dir_data_account = './data/account'
 path_account = './data/account/account.txt'
+
+

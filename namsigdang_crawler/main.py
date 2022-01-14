@@ -217,10 +217,9 @@ while (True):
             error_dic = {}
             for y in sorted(dic_parsing_menu):
                 if y[0:2] == "eu":
-                    path_classify_dir_year = './data/crawling_menu/year_{}'.format(y[2:6])
-                    path_classify_dir_month = './data/crawling_menu/year_{}/month_{}'.format(y[2:6], y[6:8])
-                    path_classify = './data/crawling_menu/year_{}/month_{}/{}_menu.dat'.format(y[2:6], y[6:8],
-                                                                                               y[2:6] + "_" + y[6:8])
+                    path_classify_dir_year = path_dir_data_crawling_menu + '/year_{}'.format(y[2:6])
+                    path_classify_dir_month = path_classify_dir_year + '/month_{}'.format(y[6:8])
+                    path_classify = path_classify_dir_month + '/{}_menu.dat'.format(y[2:6] + "_" + y[6:8])
 
                     # 경로가 존재하지 않으면 새로 생성
                     if not os.path.isdir(path_classify_dir_year):
@@ -252,9 +251,18 @@ while (True):
                     pickle.dump(classified_dic, file_classified_dic_new)
                     file_classified_dic_new.close()
 
-                    fb_ref_test = fb_db.collection('menu').document('Eunpyeong').collection(
-                        f'year_{y[2:6]}').document(f'month_{y[6:8]}')
-                    fb_ref_test.set({y: dic_parsing_menu[y]}, merge=True)
+                    # firestore에 저장
+                    try:
+                        fb_ref_test = fb_db.collection('menu').document('Eunpyeong').collection(
+                            f'year_{y[2:6]}').document(f'month_{y[6:8]}')
+                        fb_ref_test.set({y: dic_parsing_menu[y]}, merge=True)
+
+                    except Exception as e:
+                        error = str(e)
+                        write_log("\n\n\t***firestore에 저장중 에러 발생", send_slack=True)
+                        write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
+
+
 
 
                 else:
@@ -281,9 +289,7 @@ while (True):
                 write_log(values + "\n********************************************\n")
 
                 write_log(log_text=f"기존 DB가 새롭게 변경되었습니다.\n변경 요일: {day_of_the_week}\n{keys}\n{values}\n\n",
-                          log_files=[path_all_log, path_change_DB_log], send_slack=False)
-
-                write_log("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
+                          log_files=[path_all_log, path_change_DB_log], send_slack=True)
 
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
             write_log("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
@@ -328,7 +334,6 @@ while (True):
     except Exception as e:
         error = str(e)
         write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
-        write_log(error + "\n")
         write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
         random_time_sleep = random.randrange(60 * 60 * 5)
