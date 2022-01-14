@@ -1,5 +1,4 @@
 import csv
-import datetime
 import os
 import re
 import pickle
@@ -19,6 +18,7 @@ from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, p
 from make_log import write_log, slack_msg
 from environment_composition import create_env, check_all_menu_dat, check_account
 from my_date import my_date, day_of_the_week, today_date
+from firebase_db import fb_cred, fb_db
 
 
 def def_sleep():
@@ -200,7 +200,7 @@ while (True):
             write_log(path_all_menu_dat + "을 불러왔습니다.")
             file_all_menu_dat_old.close()
 
-            #          변동사항 확인하기 위해 dic_all_menu_old로 깊은 복사하여 백업.
+            # 변동사항 확인하기 위해 dic_all_menu_old로 깊은 복사하여 백업.
             dic_all_menu_old = copy.deepcopy(dic_all_menu)
 
             dic_all_menu.update(dic_parsing_menu)
@@ -252,6 +252,9 @@ while (True):
                     pickle.dump(classified_dic, file_classified_dic_new)
                     file_classified_dic_new.close()
 
+                    fb_ref_test = fb_db.collection('menu').document('Eunpyeong').collection(
+                        f'year_{y[2:6]}').document(f'month_{y[6:8]}')
+                    fb_ref_test.set({y: dic_parsing_menu[y]}, merge=True)
 
 
                 else:
@@ -260,7 +263,7 @@ while (True):
                     write_log("key값:{}".format(y))
                     error_dic[y] = dic_parsing_menu[y]
 
-            write_log("DB를 날짜별로 분류해 저장하였습니다.")
+            write_log("날짜별로 분류해 DB에 저장하였습니다.")
 
             if len(error_dic) != 0:
                 write_log("--<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
