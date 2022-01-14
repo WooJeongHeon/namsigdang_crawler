@@ -13,20 +13,27 @@ def slack_msg(msg):
 
 class WriteLogs:
 
-    def __init__(self, log_path, logText):
+    def __init__(self, log_path, log_text):
         self.log_path = log_path
-        self.logText = logText
+        self.log_text = log_text
 
     def __str__(self):
-        return f"{datetime.datetime.now()}: {self.logText}"
+        return f"{datetime.datetime.now()}: {self.log_text}"
 
     def write_to_file(self):
         logfile = open(self.log_path, 'a')
-        logfile.writelines(str(datetime.datetime.now()) + ": " + self.logText + "\n")
+        logfile.writelines(str(datetime.datetime.now()) + ": " + self.log_text + "\n")
         logfile.close()
 
 
-def write_log(log_text, log_file=path_all_log):
-    write_logs = WriteLogs(log_file, log_text)
-    print(write_logs)
-    write_logs.write_to_file()
+def write_log(log_text, log_files=None, send_slack=False):
+    if log_files is None:
+        log_files = [path_all_log]
+
+    for log_file in log_files:
+        write_logs = WriteLogs(log_file, log_text)
+        print(write_logs)
+        write_logs.write_to_file()
+
+    if send_slack:
+        slack_msg(log_text)

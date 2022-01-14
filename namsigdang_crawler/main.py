@@ -330,7 +330,7 @@ while (True):
         error = str(e)
         write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ")
         write_log(error + "\n")
-        write_log(log_text=error + "\n", log_file=path_error_log)
+        write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log])
 
         random_time_sleep = random.randrange(60 * 60 * 5)
 
