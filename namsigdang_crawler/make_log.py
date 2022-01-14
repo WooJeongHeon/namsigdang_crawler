@@ -30,13 +30,14 @@ def write_log(log_text, log_files=None, send_slack=False):
     if log_files is None:
         log_files = [path_all_log]
 
+    n = 0
     for log_file in log_files:
+        n += 1
         write_logs = WriteLogs(log_file, log_text)
-        print(write_logs)
+
+        if n == 1:
+            print(write_logs)
         write_logs.write_to_file()
 
     if send_slack:
         slack_msg(log_text)
-
-
-

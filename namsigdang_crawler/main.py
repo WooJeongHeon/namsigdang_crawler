@@ -48,7 +48,7 @@ while (True):
 
         my_id, my_pw = check_account()
 
-        write_log(f"데이터 수집을 시작합니다. ({repeat_time}회)", send_slack=True)
+        write_log(f"데이터 수집을 시작합니다. ({repeat_time}회째)", send_slack=True)
 
         options = webdriver.ChromeOptions()
         options.add_argument('headless')  # 창 숨기기
@@ -251,15 +251,15 @@ while (True):
                     pickle.dump(classified_dic, file_classified_dic_new)
                     file_classified_dic_new.close()
 
-                    # firestore에 저장
+                    # firestore에 메뉴 저장
                     try:
-                        fb_ref_test = fb_db.collection('menu').document('Eunpyeong').collection(
+                        fb_ref_eun_menu = fb_db.collection('menu').document('Eunpyeong').collection(
                             f'year_{y[2:6]}').document(f'month_{y[6:8]}')
-                        fb_ref_test.set({y: dic_parsing_menu[y]}, merge=True)
+                        fb_ref_eun_menu.set({y: dic_parsing_menu[y]}, merge=True)
 
                     except Exception as e:
                         error = str(e)
-                        write_log("\n\n\t***firestore에 저장중 에러 발생", send_slack=True)
+                        write_log("\n\n\t***firestore에 메뉴 저장 중 에러 발생", send_slack=True)
                         write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
 
@@ -291,6 +291,23 @@ while (True):
                 write_log(log_text=f"기존 DB가 새롭게 변경되었습니다.\n변경 요일: {day_of_the_week}\n{keys}\n{values}\n\n",
                           log_files=[path_all_log, path_change_DB_log], send_slack=True)
 
+                # firestore에 메뉴 변동사항 저장
+                try:
+
+                    fb_ref_eun_update_info = fb_db.collection('event').document(
+                        "Eunpyeong_menu_update_info").collection(f'year_{today_year}').document(f'month_{today_month}')
+                    fb_ref_eun_update_info.set(
+                        {str(datetime.datetime.now()): {"day_of_the_week": day_of_the_week, "update_keys": keys,
+                                                        "update_values": values}}, merge=True)
+
+                    write_log("firestore에 변동사항 정보를 기록하였습니다.")
+
+
+                except Exception as e:
+                    error = str(e)
+                    write_log("\n\n\t***firestore에 메뉴 변동사항 저장 중 에러 발생", send_slack=True)
+                    write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
+
             driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
             write_log("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
             sleep(1)
@@ -303,7 +320,7 @@ while (True):
         file_all_menu_txt.close()
         write_log(path_all_menu_txt + "를 새로 생성하였습니다.")
 
-        write_log("[" + str(repeat_time) + "회째]: 성공적으로 크롤링을 마쳤습니다!!")
+        write_log("[" + str(repeat_time) + "회째]: 성공적으로 크롤링을 마쳤습니다!!", send_slack=True)
 
         driver.close()
 
