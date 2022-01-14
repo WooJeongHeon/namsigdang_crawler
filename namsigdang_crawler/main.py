@@ -1,4 +1,3 @@
-import calendar
 import csv
 import datetime
 import os
@@ -14,40 +13,16 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from slack_bot import slack_msg
-
-
-def make_path_dir(path_dir, bool):
-    if not os.path.isdir(path_dir):
-        os.mkdir(path_dir)
-
-        if bool:
-            write_all_log_file(path_dir + "경로가 없어 새로 생성 했습니다.")
-
-
-def make_path_file(path_file):
-    if not os.path.exists(path_file):
-        logfile = open(path_file, 'w')
-        logfile.close()
-        write_all_log_file(path_file + "파일이 없어 새로 생성합니다.")
-
-
-def write_all_log_file(logText):
-    print(str(datetime.datetime.now()) + ": " + logText)
-
-    logfile = open(path_all_log, 'a')
-    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
-    logfile.close()
-
-
-def write_error_log_file(logText):
-    logfile = open(path_error_log, 'a')
-    logfile.writelines(str(datetime.datetime.now()) + ": " + logText + "\n")
-    logfile.close()
+from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, path_error_log, \
+    path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
+    path_all_menu_dat, path_dir_data_account, path_account
+from make_log import write_all_log_file, write_error_log_file, slack_msg
+from environment_composition import create_env
+from my_date import my_date, day_of_the_week, today_date
 
 
 def def_sleep():
-    sleep_time_def = 8
+    sleep_time_def = 1
 
     if sleep_time_def < 60:
         write_all_log_file(str(sleep_time_def) + "초 쉬기")
@@ -66,39 +41,7 @@ while (True):
     try:
         repeat_time += 1
 
-        my_date = datetime.date.today()  # 2019-04-07
-        day_of_the_week = calendar.day_name[my_date.weekday()]  # Sunday
-        my_date = str(my_date) + "-" + str(day_of_the_week)
-        today_date = str(datetime.datetime.now())  # 2019-04-07 16:45:15.103445
-
-        path_dir_data = './data'
-        path_dir_data_log = './data/log'
-        path_dir_data_all_log = './data/log/all_log'
-        path_all_log = './data/log/all_log/' + my_date[0:4] + '_year/' + my_date[
-                                                                         5:7] + '_month/all_log(' + my_date + ').txt'
-        path_error_log = './data/log/error_log.txt'
-        path_change_DB_log = './data/log/change_DB_log.txt'
-
-        path_dir_data_crawling_menu = './data/crawling_menu'
-        path_this_week_menu_csv = './data/crawling_menu/this_week_menu.csv'
-        path_backup_menu_csv = './data/crawling_menu/backup_menu.csv'
-        path_all_menu_txt = './data/crawling_menu/all_menu.txt'
-        path_all_menu_dat = './data/crawling_menu/all_menu.dat'
-
-        path_dir_data_account = './data/account'
-        path_account = './data/account/account.txt'
-
-        make_path_dir(path_dir_data, False)  # 아직 로그 경로가 없어 로그생성 False
-        make_path_dir(path_dir_data_log, False)
-        make_path_dir(path_dir_data_all_log, False)
-        make_path_dir('./data/log/all_log/' + my_date[0:4] + '_year', False)
-        make_path_dir('./data/log/all_log/' + my_date[0:4] + '_year/' + my_date[5:7] + '_month', True)
-        make_path_dir(path_dir_data_account, True)
-        make_path_dir(path_dir_data_crawling_menu, True)
-
-        make_path_file(path_all_log)
-        make_path_file(path_error_log)
-        make_path_file(path_change_DB_log)
+        create_env()
 
         write_all_log_file(str(repeat_time) + "회째 실행!")
 
