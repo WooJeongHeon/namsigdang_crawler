@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from slack_bot import slack_msg
+
 
 def make_path_dir(path_dir, bool):
     if not os.path.isdir(path_dir):
