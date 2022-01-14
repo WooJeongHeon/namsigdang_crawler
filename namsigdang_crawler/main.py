@@ -48,7 +48,7 @@ while (True):
 
         my_id, my_pw = check_account()
 
-        write_log(f"데이터 수집을 시작합니다. ({repeat_time}회)")
+        write_log(f"데이터 수집을 시작합니다. ({repeat_time}회)", send_slack=True)
 
         options = webdriver.ChromeOptions()
         options.add_argument('headless')  # 창 숨기기
@@ -277,12 +277,8 @@ while (True):
                 write_log(keys)
                 write_log(values + "\n********************************************\n")
 
-                file_change_DB_log = open(path_change_DB_log, 'a')
-                file_change_DB_log.writelines(
-                    "[" + day_of_the_week + "]" + str(datetime.datetime.now()) + ": " + "기존 DB가 새롭게 변경되었습니다." + "\n")
-                file_change_DB_log.writelines(keys + "\n")
-                file_change_DB_log.writelines(values + "\n" + "\n")
-                file_change_DB_log.close()
+                write_log(log_text=f"기존 DB가 새롭게 변경되었습니다.\n변경 요일: {day_of_the_week}\n{keys}\n{values}\n\n",
+                          log_files=[path_all_log, path_change_DB_log], send_slack=False)
 
                 write_log("\'{}\'에 DB의 변동사항을 기록했습니다.".format(path_change_DB_log))
 
@@ -328,9 +324,9 @@ while (True):
 
     except Exception as e:
         error = str(e)
-        write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ")
+        write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
         write_log(error + "\n")
-        write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log])
+        write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
         random_time_sleep = random.randrange(60 * 60 * 5)
 

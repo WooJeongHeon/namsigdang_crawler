@@ -37,3 +37,6 @@ def write_log(log_text, log_files=None, send_slack=False):
 
     if send_slack:
         slack_msg(log_text)
+
+
+
