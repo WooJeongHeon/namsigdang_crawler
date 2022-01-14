@@ -17,7 +17,7 @@ from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, p
     path_all_menu_dat, path_dir_data_account, path_account
 from make_log import write_log, slack_msg
 from environment_composition import create_env, check_all_menu_dat, check_account
-from my_date import my_date, day_of_the_week, today_date
+from my_date import my_date, day_of_the_week, today_date, today_year, today_month
 from firebase_db import fb_cred, fb_db
 
 
@@ -297,7 +297,7 @@ while (True):
                     fb_ref_eun_update_info = fb_db.collection('event').document(
                         "Eunpyeong_menu_update_info").collection(f'year_{today_year}').document(f'month_{today_month}')
                     fb_ref_eun_update_info.set(
-                        {str(datetime.datetime.now()): {"day_of_the_week": day_of_the_week, "update_keys": keys,
+                        {today_date: {"day_of_the_week": day_of_the_week, "update_keys": keys,
                                                         "update_values": values}}, merge=True)
 
                     write_log("firestore에 변동사항 정보를 기록하였습니다.")
