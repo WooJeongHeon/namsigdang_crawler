@@ -26,8 +26,8 @@ def create_env():
     make_path_dir(path_dir_data, False)  # 아직 로그 경로가 없어 로그생성 False
     make_path_dir(path_dir_data_log, False)
     make_path_dir(path_dir_data_all_log, False)
-    make_path_dir(path_dir_data_all_log + my_date()[0:4] + '_year', False)
-    make_path_dir(path_dir_data_all_log + my_date()[0:4] + '_year/' + my_date()[5:7] + '_month', True)
+    make_path_dir(path_dir_data_all_log + '/' + my_date()[0:4] + '_year', False)
+    make_path_dir(path_dir_data_all_log + '/' + my_date()[0:4] + '_year/' + my_date()[5:7] + '_month', True)
     make_path_dir(path_dir_data_account, True)
     make_path_dir(path_dir_data_crawling_menu, True)
 
