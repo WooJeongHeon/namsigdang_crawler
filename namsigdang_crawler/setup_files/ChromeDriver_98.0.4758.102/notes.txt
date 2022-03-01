@@ -1,0 +1,5 @@
+---------ChromeDriver 98.0.4758.102 (2022-02-15)---------
+Supports Chrome version 98
+Resolved issue 3933: Click at edge of viewport is ineffective without error [Pri-]
+REVERTED!!! Resolved issue 2269: Impossible to use non-BMP characters (code points above U+FFFF) [Pri-3]
+Resolved issue chromium:1295243: Regression in ChromeDriver sendKeys [Pri-1]
