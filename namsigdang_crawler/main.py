@@ -2,15 +2,17 @@ import csv
 import os
 import re
 import pickle
-import random
 import copy
+import time
 from time import sleep
 
 from selenium import webdriver
-from bs4 import BeautifulSoup
-
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
+from bs4 import BeautifulSoup
 
 from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, path_error_log, \
     path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
@@ -30,10 +32,13 @@ def def_sleep():
         write_log(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
 
     sleep(sleep_time_def)
+    write_log("/")
 
 
 # main Program
 try:
+    start_time = time.time()  # 시작 시간 저장
+
     def_sleep()
 
     create_env()
@@ -55,9 +60,9 @@ try:
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
-    # driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-    driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_win32/chromedriver.exe')  # 윈도우
     write_log("크롬 드라이버 실행 완료")
 
     write_log("1초 쉬기..")
@@ -320,13 +325,15 @@ try:
     file_all_menu_txt.close()
     write_log(path_all_menu_txt + "를 새로 생성하였습니다.")
 
-    write_log("성공적으로 크롤링을 마쳤습니다!!", send_slack=True)
+    running_time = time.time() - start_time  # 현재시각 - 시작시간 = 실행 시간
+    running_time = round(running_time, 3)
+
+    write_log(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)", send_slack=True)
 
     driver.close()
 
-    write_log("/")
-
-    write_log("\n====================================================")
+    write_log("\n")
+    write_log("====================================================")
     write_log("====================================================\n")
 
 
@@ -335,5 +342,3 @@ except Exception as e:
     error = str(e)
     write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
     write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
-
-    write_log("/")
