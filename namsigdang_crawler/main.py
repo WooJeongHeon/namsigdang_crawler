@@ -55,8 +55,9 @@ try:
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
-    # driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
-    driver = webdriver.Chrome('./setup_files/chromedriver_win32/chromedriver.exe')  # 윈도우
+    # driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
+
+    driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_win32/chromedriver.exe')  # 윈도우
     write_log("크롬 드라이버 실행 완료")
 
     write_log("1초 쉬기..")
