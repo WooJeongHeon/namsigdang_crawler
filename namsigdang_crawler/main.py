@@ -22,7 +22,7 @@ from firebase_db import fb_cred, fb_db
 
 
 def def_sleep():
-    sleep_time_def = 5
+    sleep_time_def = 1
 
     if sleep_time_def < 60:
         write_log(str(sleep_time_def) + "초 쉬기")
@@ -30,6 +30,7 @@ def def_sleep():
         write_log(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
 
     sleep(sleep_time_def)
+    write_log("/")
 
 
 # main Program
@@ -324,9 +325,8 @@ try:
 
     driver.close()
 
-    write_log("/")
-
-    write_log("\n====================================================")
+    write_log("\n")
+    write_log("====================================================")
     write_log("====================================================\n")
 
 
@@ -335,5 +335,3 @@ except Exception as e:
     error = str(e)
     write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
     write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
-
-    write_log("/")
