@@ -7,10 +7,12 @@ import copy
 from time import sleep
 
 from selenium import webdriver
-from bs4 import BeautifulSoup
-
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
+from bs4 import BeautifulSoup
 
 from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, path_error_log, \
     path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
@@ -56,9 +58,9 @@ try:
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
-    # driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-    driver = webdriver.Chrome('./setup_files/ChromeDriver_98.0.4758.102/chromedriver_win32/chromedriver.exe')  # 윈도우
     write_log("크롬 드라이버 실행 완료")
 
     write_log("1초 쉬기..")
