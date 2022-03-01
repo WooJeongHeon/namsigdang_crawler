@@ -92,11 +92,11 @@ while (True):
 
         # WebDriverWait(driver, 5).until(EC.alert_is_present())  # (팝업창) 5초
         # driver.switch_to.alert.accept()  # 팝업창 확인 클릭
-        # write_all_log_file("팝업창 확인 클릭 완료")
-
-        # write_all_log_file("3초 쉬기..")
+        # write_log("팝업창 확인 클릭 완료")
+        #
+        # write_log("3초 쉬기..")
         # sleep(3)
-
+        #
         # def_sleep()
 
         # driver.find_element_by_xpath('//*[@id="sidebarButton"]/span').click()  # 메뉴 클릭 완료
