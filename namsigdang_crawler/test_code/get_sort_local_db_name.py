@@ -19,7 +19,7 @@ def print_files_in_dir(root_dir, prefix):
 
 
 if __name__ == "__main__":
-    path = "../../data/crawling_menu"
+    path = "../data/crawling_menu"
     print_files_in_dir(path, "")
 
     print(l)
