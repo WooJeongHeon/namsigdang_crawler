@@ -270,8 +270,6 @@ try:
                     write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
 
-
-
             else:
                 write_log("조건에 만족하지 않아 날짜별 DB분류에 제외하였습니다.")
                 write_log("y[0:2]: {}".format(y[0:2]))
