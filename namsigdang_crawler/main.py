@@ -22,7 +22,7 @@ from firebase_db import fb_cred, fb_db
 
 
 def def_sleep():
-    sleep_time_def = 1
+    sleep_time_def = 5
 
     if sleep_time_def < 60:
         write_log(str(sleep_time_def) + "초 쉬기")
@@ -54,8 +54,11 @@ while (True):
         options.add_argument('headless')  # 창 숨기기
         options.add_argument('window-size=1920x1080')
         options.add_argument("--disable-gpu")
+        options.add_argument("lang=ko_KR")  # 한국어
         options.add_argument('--disable-extensions')
         options.add_argument('--no-sandbox')
+        options.add_argument(
+            "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
         # driver = webdriver.Chrome('./setup_files/ChromeDriver_73.0.3683.68/chromedriver_linux64/chromedriver', chrome_options=options) # 리눅스
         driver = webdriver.Chrome('./setup_files/chromedriver_win32/chromedriver.exe')  # 윈도우
@@ -182,7 +185,7 @@ while (True):
             write_log("\'" + path_backup_menu_csv + "\' 쓰기 완료")
             write_log("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
 
-            # # dictionary 만들기 (this_week_menu.csv 읽어와서 만드는 방법)
+            # # dictionary 만들기 (this_week_menu.csv 읽어와서 만들기)
             # file = open(path_this_week_menu_csv, 'r', encoding='euc-kr')
             # reader = csv.reader(file)
 
