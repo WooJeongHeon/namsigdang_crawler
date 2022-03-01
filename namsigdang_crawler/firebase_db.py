@@ -2,7 +2,9 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-fb_cred = credentials.Certificate("./data/account/firebase_sdk_key.json")
+from data_path import project_path
+
+fb_cred = credentials.Certificate(project_path + "/data/account/firebase_sdk_key.json")
 firebase_admin.initialize_app(fb_cred, {
     'projectId': 'namsigdang-crawler',
 })

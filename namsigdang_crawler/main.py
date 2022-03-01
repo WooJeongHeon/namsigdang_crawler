@@ -14,19 +14,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-
 from bs4 import BeautifulSoup
 
-# Get the current working directory (cwd)
-currentPath = os.getcwd()
-
-# print path
-print(f"currentPath: {currentPath}")
-
-# change path
-os.chdir(currentPath)
-
-from data_path import path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, path_error_log, \
+from data_path import project_path, path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, \
+    path_error_log, \
     path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
     path_all_menu_dat, path_dir_data_account, path_account
 from make_log import write_log, slack_msg
