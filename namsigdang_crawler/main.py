@@ -34,6 +34,7 @@ def def_sleep():
 
 # main Program
 try:
+    def_sleep()
 
     create_env()
 
