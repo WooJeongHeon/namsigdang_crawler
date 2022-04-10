@@ -42,8 +42,6 @@ def def_sleep():
 try:
     start_time = time.time()  # 시작 시간 저장
 
-    def_sleep()
-
     create_env()
 
     if not check_all_menu_dat():  # all_menu_dat이 존재하지 않을때
