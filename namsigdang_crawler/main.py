@@ -54,11 +54,11 @@ try:
     options = webdriver.ChromeOptions()
     options.add_argument('headless')  # 창 숨기기
     options.add_argument('window-size=1920x1080')
-    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-gpu") # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
     options.add_argument("lang=ko_KR")  # 한국어
     options.add_argument('--disable-extensions')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--no-sandbox') # 리소스에 대한 액세스를 방지
+    options.add_argument('--disable-dev-shm-usage') # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
