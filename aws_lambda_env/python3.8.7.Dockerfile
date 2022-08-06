@@ -24,6 +24,5 @@ RUN pip install firebase-admin -t ./python
 RUN zip -r python.zip ./python/
 
 
-# docker build --tag aws-lambda-firebase-admin:1.0 .
-# docker cp container_name:python.zip ./Desktop/
-# docker cp aws-lambda-firebase-admin:python.zip ./Desktop/
+# docker build -f aws_lambda_env/python3.8.7.python3.8.7.Dockerfile --tag aws-lambda-firebase-admin:1.0 .
+# docker cp container_name:python.zip .
