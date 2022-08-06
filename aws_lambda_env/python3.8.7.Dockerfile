@@ -19,10 +19,18 @@ python3.8 -m pip install virtualenv
 
 RUN python3.8 -m venv myvenv
 RUN source myvenv/bin/activate
-RUN pip install firebase-admin -t ./python
+
+RUN pip install requests==2.26.0 -t ./python
+#RUN pip install selenium==4.1.0 -t ./python
+#RUN pip install webdriver-manager==3.5.3 -t ./python
+RUN pip install beautifulsoup4==4.10.0 -t ./python
+RUN pip install lxml==4.9.1 -t ./python
+#RUN pip install tqdm==4.63.0 -t ./python
+RUN pip install firebase-admin==5.2.0 -t ./python
+
 # RUN deactivate
 RUN zip -r python.zip ./python/
 
 
-# docker build -f aws_lambda_env/python3.8.7.python3.8.7.Dockerfile --tag aws-lambda-firebase-admin:1.0 .
+# docker build -f aws_lambda_env/python3.8.7.Dockerfile --tag aws-lambda-library:1.0 .
 # docker cp container_name:python.zip .
