@@ -21,7 +21,7 @@ RUN python3.8 -m venv myvenv
 RUN source myvenv/bin/activate
 
 RUN pip install requests==2.26.0 -t ./python
-#RUN pip install selenium==4.1.0 -t ./python
+RUN pip install selenium==4.1.0 -t ./python
 #RUN pip install webdriver-manager==3.5.3 -t ./python
 RUN pip install beautifulsoup4==4.10.0 -t ./python
 RUN pip install lxml==4.9.1 -t ./python
