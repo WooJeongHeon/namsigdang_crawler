@@ -68,6 +68,9 @@ def namsigdang_crawler():
         chromedriver_docker = "/home/namsigdang-crawler/chromedriver/chromedriver"
         driver = webdriver.Chrome(chromedriver_docker, options=options)
 
+        # chromedriver_aws_lambda = "/opt/python/bin/chromedriver"
+        # driver = webdriver.Chrome(chromedriver_aws_lambda, options=options)
+
         write_log("크롬 드라이버 실행 완료")
 
         write_log("1초 쉬기..")
