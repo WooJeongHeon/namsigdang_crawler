@@ -17,14 +17,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-from data_path import project_path, path_dir_data, path_dir_data_log, path_dir_data_all_log, path_all_log, \
-    path_error_log, \
-    path_change_DB_log, path_dir_data_crawling_menu, path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, \
-    path_all_menu_dat, path_dir_data_account, path_account
-from make_log import write_log, slack_msg
+from data_path import path_all_log, path_error_log, path_change_DB_log, path_dir_data_crawling_menu, \
+    path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, path_all_menu_dat
+from make_log import write_log
 from environment_composition import create_env, check_all_menu_dat, check_account
-from my_date import my_date, day_of_the_week, today_date, today_year, today_month
-from firebase_db import fb_cred, fb_db
+from my_date import day_of_the_week, today_date, today_year, today_month
+from firebase_db import fb_db
 
 
 def def_sleep():
@@ -330,7 +328,7 @@ try:
 
     write_log(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)", send_slack=True)
 
-    driver.close()
+    driver.close()  # 브라우저 화면만 닫습니다.
 
     write_log("\n")
     write_log("====================================================")
@@ -342,3 +340,7 @@ except Exception as e:
     error = str(e)
     write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
     write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
+
+
+finally:
+    driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
