@@ -11,6 +11,7 @@ from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
@@ -54,11 +55,11 @@ try:
     options = webdriver.ChromeOptions()
     options.add_argument('headless')  # 창 숨기기
     options.add_argument('window-size=1920x1080')
-    options.add_argument("--disable-gpu") # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
+    options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
     options.add_argument("lang=ko_KR")  # 한국어
     options.add_argument('--disable-extensions')
-    options.add_argument('--no-sandbox') # 리소스에 대한 액세스를 방지
-    options.add_argument('--disable-dev-shm-usage') # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
+    options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
+    options.add_argument('--disable-dev-shm-usage')  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
@@ -76,21 +77,21 @@ try:
     driver.implicitly_wait(3)
     def_sleep()
 
-    menu = driver.find_element_by_xpath(
-        '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
+    driver.find_element(By.XPATH,
+                        '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
     def_sleep()
 
-    stuUserId = driver.find_element_by_id('stuUserId')
+    stuUserId = driver.find_element(By.ID, 'stuUserId')
     stuUserId.send_keys(my_id)
     write_log("아이디 입력 완료")
     def_sleep()
 
-    stuPassword = driver.find_element_by_id('stuPassword')
+    stuPassword = driver.find_element(By.ID, 'stuPassword')
     stuPassword.send_keys(my_pw)
     write_log("비밀번호 입력 완료")
     def_sleep()
 
-    driver.find_element_by_xpath('//*[@id="student"]/div/div[2]/button').click()  # Login 버튼 클릭
+    driver.find_element(By.XPATH, '//*[@id="student"]/div/div[2]/button').click()  # Login 버튼 클릭
     write_log("로그인 버튼 클릭 완료")
 
     sleep(1)
@@ -105,27 +106,27 @@ try:
     #
     # def_sleep()
 
-    # driver.find_element_by_xpath('//*[@id="sidebarButton"]/span').click()  # 메뉴 클릭 완료
+    # driver.find_element(By.XPATH,'//*[@id="sidebarButton"]/span').click()  # 메뉴 클릭 완료
     # write_all_log_file("메뉴 클릭 완료")
     # sleep(1)
     # def_sleep()
 
-    # driver.find_element_by_xpath('//*[@id="left-meun"]/div[1]/ul/li[3]/a/span').click()  # 학생생활지원 클릭 완료
+    # driver.find_element(By.XPATH,'//*[@id="left-meun"]/div[1]/ul/li[3]/a/span').click()  # 학생생활지원 클릭 완료
     # write_all_log_file("\'학생생활지원\' 클릭 완료")
     # sleep(1)
     # def_sleep()
 
-    # driver.find_element_by_xpath('//*[@id="li_menu_Q0102"]/a').click()  # 식단표 클릭 완료
+    # driver.find_element(By.XPATH,'//*[@id="li_menu_Q0102"]/a').click()  # 식단표 클릭 완료
     # write_all_log_file("\'식단표\' 클릭 완료")
     # def_sleep()
 
-    # driver.find_element_by_xpath('/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
+    # driver.find_element(By.XPATH,'/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
     # driver.implicitly_wait(1)
 
     driver.get("http://portal.ndhs.or.kr/studentLifeSupport/carte/list")
     write_log("식단표 페이지로 이동했습니다.")
 
-    driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
+    driver.find_element(By.XPATH, '/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
     write_log("\'이전주 보기\' 클릭 완료")
     sleep(1)
     def_sleep()
@@ -138,8 +139,7 @@ try:
         food = html.find_all('tr', attrs={'style': 'height:80px'})
         write_log("{'style': 'height:80px'} 검색 완료")
 
-        tag_list = ['</th>', '<td>', '<tr style="height:80px">', '</tr>', '</td>', '<th>',
-                    '<th style="color:red;">',
+        tag_list = ['</th>', '<td>', '<tr style="height:80px">', '</tr>', '</td>', '<th>', '<th style="color:red;">',
                     '\n', '\t']
         food_list = []
         for food_ in food:
@@ -313,7 +313,7 @@ try:
                 write_log("\n\n\t***firestore에 메뉴 변동사항 저장 중 에러 발생", send_slack=True)
                 write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
-        driver.find_element_by_xpath('/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
+        driver.find_element(By.XPATH, '/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
         write_log("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
         sleep(1)
         def_sleep()
