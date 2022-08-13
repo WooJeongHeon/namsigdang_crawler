@@ -350,5 +350,5 @@ def namsigdang_crawler():
         write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
 
 
-    finally:
-        driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
+    # finally:
+    #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
