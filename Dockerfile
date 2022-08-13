@@ -20,7 +20,7 @@ RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/` c
 RUN mkdir chromedriver # 크롬 드라이버를 설치할 경로로 chromedriver 디렉토리를 생성
 RUN unzip /tmp/chromedriver.zip chromedriver -d /home/namsigdang-crawler/chromedriver # 크롬 드라이버 압축 해제
 
-# Install namsigdnag-crawler dependencies using file requirements.txt
+# Install namsigdang-crawler dependencies using file requirements.txt
 COPY ./requirements.txt .
 RUN pip install --upgrade pip # pip 업그레이드
 RUN pip install -r requirements.txt # 패키지 설치
