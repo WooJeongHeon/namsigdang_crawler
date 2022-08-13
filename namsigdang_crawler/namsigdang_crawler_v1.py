@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 from data_path import path_all_log, path_error_log, path_change_DB_log, path_dir_data_crawling_menu, \
     path_this_week_menu_csv, path_backup_menu_csv, path_all_menu_txt, path_all_menu_dat
 from make_log import write_log
-from environment_composition import create_env, check_all_menu_dat, check_account
+from environment_composition import create_env_v1, check_all_menu_dat, check_account
 from my_date import day_of_the_week, today_date, today_year, today_month
 from firebase_db import fb_db
 
@@ -42,7 +42,7 @@ def namsigdang_crawler():
     try:
         start_time = time.time()  # 시작 시간 저장
 
-        create_env()
+        create_env_v1()
 
         if not check_all_menu_dat():  # all_menu_dat이 존재하지 않을때
             print("check_all_menu_dat: False")
@@ -348,7 +348,6 @@ def namsigdang_crawler():
         error = str(e)
         write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
         write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
-
 
     # finally:
     #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.

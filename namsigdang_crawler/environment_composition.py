@@ -22,7 +22,7 @@ def make_path_file(path_file):
         write_log(path_file + "파일이 없어 새로 생성합니다.")
 
 
-def create_env():
+def create_env_v1():
     make_path_dir(path_dir_data, False)  # 아직 로그 경로가 없어 로그생성 False
     make_path_dir(path_dir_data_log, False)
     make_path_dir(path_dir_data_all_log, False)
@@ -34,6 +34,11 @@ def create_env():
     make_path_file(path_all_log)
     make_path_file(path_error_log)
     make_path_file(path_change_DB_log)
+
+
+def create_env_v2():
+    make_path_dir(path_dir_data, False)  # 아직 로그 경로가 없어 로그생성 False
+    make_path_dir(path_dir_data_account, True)
 
 
 def check_all_menu_dat():
