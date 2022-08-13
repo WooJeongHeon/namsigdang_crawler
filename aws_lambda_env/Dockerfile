@@ -4,7 +4,7 @@ LABEL maintainer="contact@wookingwoo.com"
 
 RUN mkdir -p /home/namsigdang-crawler/chromedriver
 
-RUN yum install -y wget unzip libX11
+RUN yum install -y wget unzip
 
 # Install Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && \
