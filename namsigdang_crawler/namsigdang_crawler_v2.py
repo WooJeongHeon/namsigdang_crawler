@@ -29,6 +29,33 @@ def def_sleep(sleep_time_def=1.2):
     print("/")
 
 
+def get_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')  # 창 숨기기
+    options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
+    options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
+    options.add_argument("--window-size=1280x1696")
+    options.add_argument("--single-process")
+    options.add_argument("--disable-dev-shm-usage")  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
+    options.add_argument("--disable-dev-tools")
+    options.add_argument("--no-zygote")
+    options.add_argument(
+        'user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
+
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    # chromedriver_docker = "/home/namsigdang-crawler/chromedriver/chromedriver"
+    # driver = webdriver.Chrome(chromedriver_docker, options=options)
+
+    # chromedriver_aws_lambda = "/opt/python/bin/chromedriver"
+    # driver = webdriver.Chrome(chromedriver_aws_lambda, options=options)
+
+    options.binary_location = '/opt/chrome/chrome'
+    driver = webdriver.Chrome("/opt/chromedriver", options=options)
+    return driver
+
+
 # main Program
 def namsigdang_crawler():
     try:
@@ -41,25 +68,7 @@ def namsigdang_crawler():
         # write_log(f"데이터 수집을 시작합니다.", send_slack=True)
         slack_msg(f"데이터 수집을 시작합니다.")
 
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')  # 창 숨기기
-        options.add_argument('window-size=1920x1080')
-        options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
-        options.add_argument("lang=ko_KR")  # 한국어
-        options.add_argument('--disable-extensions')
-        options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
-        options.add_argument('--disable-dev-shm-usage')  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
-        options.add_argument(
-            "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
-        chromedriver_docker = "/home/namsigdang-crawler/chromedriver/chromedriver"
-        driver = webdriver.Chrome(chromedriver_docker, options=options)
-
-        # chromedriver_aws_lambda = "/opt/python/bin/chromedriver"
-        # driver = webdriver.Chrome(chromedriver_aws_lambda, options=options)
+        driver = get_driver()
 
         print("크롬 드라이버 실행 완료")
 
