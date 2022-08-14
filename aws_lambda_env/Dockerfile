@@ -26,7 +26,6 @@ COPY requirements.txt  .
 RUN pip install -r requirements.txt
 
 COPY --from=build /opt/chrome-linux /opt/chrome
-
 COPY --from=build /opt/chromedriver /opt/
 
 # Copy namsigdang-crawler codes
