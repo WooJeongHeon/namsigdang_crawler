@@ -2,5 +2,6 @@
 .idea/*
 venv/*
 nohup.out
+aws_lambda_env/python_layer_module/python.zip
 
 namsigdang_crawler/data

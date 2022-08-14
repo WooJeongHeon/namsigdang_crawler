@@ -1,7 +1,7 @@
 from my_date import my_date, day_of_the_week, today_date
 
-# project_path = '.'
-project_path = '/home/ubuntu/namsigdang-server/namsigdang_crawler' # 절대경로 기입
+project_path = '.'
+# project_path = '/home/ubuntu/namsigdang-server/namsigdang_crawler' # 절대경로 기입
 
 path_dir_data = project_path + '/data'
 path_dir_data_log = path_dir_data + '/log'
