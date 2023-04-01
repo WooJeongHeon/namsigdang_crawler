@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.11
 
 LABEL maintainer="contact@wookingwoo.com"
 
@@ -32,6 +32,6 @@ COPY ./namsigdang_crawler ./namsigdang_crawler
 WORKDIR /home/namsigdang-crawler/namsigdang_crawler
 
 # 실행
-CMD ["python", "main_runner.py"]
+CMD ["python", "crawler_main.py"]
 
 # docker build --tag namsigdang-crawler:1.0 .
