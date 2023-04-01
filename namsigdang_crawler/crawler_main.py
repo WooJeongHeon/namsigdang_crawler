@@ -12,9 +12,10 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-from make_log import slack_msg
+from slack import slack_msg
 from firebase_db import fb_db
 from data.account import portal_account
+import constants.web_element as element
 
 
 def def_sleep(sleep_time_def=1.2):
@@ -73,12 +74,9 @@ def namsigdang_crawler(chrome_driver_option):
     try:
         start_time = time.time()  # 시작 시간 저장
 
-        # create_env_v2()  # 환경 세팅
-
         my_id = portal_account.eunpyeong_id
         my_pw = portal_account.eunpyeong_pw
 
-        # write_log(f"데이터 수집을 시작합니다.", send_slack=True)
         slack_msg(f"데이터 수집을 시작합니다.")
 
         driver_options = {
@@ -94,7 +92,6 @@ def namsigdang_crawler(chrome_driver_option):
             raise driver
 
         print("크롬 드라이버 실행 완료")
-
         def_sleep(1)
 
         driver.get("http://portal.ndhs.or.kr/index")
@@ -103,21 +100,20 @@ def namsigdang_crawler(chrome_driver_option):
         driver.implicitly_wait(3)
         def_sleep()
 
-        driver.find_element(By.XPATH,
-                            '/html/body/div/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/form/ul/li[2]/a').click()
+        driver.find_element(By.XPATH, element.staff).click()
         def_sleep()
 
-        stuUserId = driver.find_element(By.ID, 'stuUserId')
+        stuUserId = driver.find_element(By.ID, element.staff_id)
         stuUserId.send_keys(my_id)
         print("아이디 입력 완료")
         def_sleep()
 
-        stuPassword = driver.find_element(By.ID, 'stuPassword')
+        stuPassword = driver.find_element(By.ID, element.staff_pw)
         stuPassword.send_keys(my_pw)
         print("비밀번호 입력 완료")
         def_sleep()
 
-        driver.find_element(By.XPATH, '//*[@id="student"]/div/div[2]/button').click()  # Login 버튼 클릭
+        driver.find_element(By.XPATH, element.staff_login_btn).click()  # Login 버튼 클릭
         print("로그인 버튼 클릭 완료")
 
         def_sleep(1)
@@ -149,10 +145,10 @@ def namsigdang_crawler(chrome_driver_option):
         # driver.find_element(By.XPATH,'/html/body/div[2]/div[2]/div[3]/div[3]/div/div[2]/ul/li[1]/a').click()
         # driver.implicitly_wait(1)
 
-        driver.get("http://portal.ndhs.or.kr/studentLifeSupport/carte/list")
+        driver.get(element.menu_url)
         print("식단표 페이지로 이동했습니다.")
 
-        driver.find_element(By.XPATH, '/html/body/div[2]/div[3]/div/h4/button[1]/i').click()  # 이전 주 보기 클릭
+        driver.find_element(By.XPATH, element.before_week_btn).click()  # 이전 주 보기 클릭
         print("\'이전주 보기\' 클릭 완료")
         def_sleep(0.6)
         def_sleep()
@@ -175,7 +171,7 @@ def namsigdang_crawler(chrome_driver_option):
                     if food__ != '\n':
                         for tag in tag_list:
                             food__ = re.sub(tag, '', str(food__))
-
+                        # print(food__)
                         food__ = re.sub('&amp;', '&', str(food__))  # &amp를 &로 변환
 
                         temp_list.append(food__)
@@ -192,20 +188,18 @@ def namsigdang_crawler(chrome_driver_option):
                     term = term + str(term_)
                 compare_list.append([term, food_element[1], food_element[2], food_element[3]])
 
-            # write_all_log_file("compare_list: " + str(compare_list))
-
             dic_parsing_menu = {}  # dic_menu 파일 초기화
 
             for data in compare_list:
-                dic_parsing_menu["eu" + data[0] + "a"] = data[1]  # eu20180514a
-                dic_parsing_menu["eu" + data[0] + "b"] = data[2]
-                dic_parsing_menu["eu" + data[0] + "c"] = data[3]
+                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "a"] = data[1]  # eu20180514a
+                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "b"] = data[2]
+                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "c"] = data[3]
 
             print("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
 
             error_dic = {}
             for y in sorted(dic_parsing_menu):
-                if y[0:2] == "eu":
+                if y[0:2] == portal_account.eunpyeong_code:
 
                     # firestore에 메뉴 저장
                     try:
@@ -243,14 +237,11 @@ def namsigdang_crawler(chrome_driver_option):
         running_time = time.time() - start_time  # 현재시각 - 시작시간 = 실행 시간
         running_time = round(running_time, 3)
 
-        # write_log(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)", send_slack=True)
-        slack_msg(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)")
-
         driver.close()  # 브라우저 화면만 닫습니다.
 
-        print("\n")
-        print("====================================================")
-        print("====================================================\n")
+        slack_msg(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)")
+
+
 
 
 
