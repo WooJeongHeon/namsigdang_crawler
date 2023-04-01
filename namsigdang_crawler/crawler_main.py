@@ -3,7 +3,6 @@
 
 import re
 import time
-from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -14,19 +13,30 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
 from make_log import slack_msg
-from environment_composition import create_env_v2, check_account
 from firebase_db import fb_db
+from data.account import portal_account
 
 
 def def_sleep(sleep_time_def=1.2):
     if sleep_time_def < 60:
-        print(str(sleep_time_def) + "초 쉬기")
-        pass
+        print(f"sleep {sleep_time_def}sec", end=" ")
     else:
-        print(str(sleep_time_def // 60) + "분 " + str(sleep_time_def % 60) + "초 쉬기")
+        print(f"sleep {sleep_time_def // 60}min {sleep_time_def % 60}sec", end=" ")
+    time.sleep(sleep_time_def)
+    print("..done")
 
-    sleep(sleep_time_def)
-    print("/")
+
+headless_options = webdriver.ChromeOptions()
+headless_options.add_argument('--headless')  # 창 숨기기
+headless_options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
+headless_options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
+headless_options.add_argument("--window-size=1280x1696")
+headless_options.add_argument("--single-process")
+headless_options.add_argument("--disable-dev-shm-usage")  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
+headless_options.add_argument("--disable-dev-tools")
+headless_options.add_argument("--no-zygote")
+headless_options.add_argument(
+    'user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
 
 
 def get_driver_default():
@@ -35,64 +45,26 @@ def get_driver_default():
 
 
 def get_driver_local():
-    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver = webdriver.Chrome(ChromeDriverManager().install())
     return driver
 
 
 def get_driver_python_docker():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # 창 숨기기
-    options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
-    options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
-    options.add_argument("--window-size=1280x1696")
-    options.add_argument("--single-process")
-    options.add_argument("--disable-dev-shm-usage")  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
-    options.add_argument("--disable-dev-tools")
-    options.add_argument("--no-zygote")
-    options.add_argument(
-        'user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
-
     chromedriver_docker = "/home/namsigdang-crawler/chromedriver/chromedriver"
-    driver = webdriver.Chrome(chromedriver_docker, options=options)
+    driver = webdriver.Chrome(chromedriver_docker, options=headless_options)
 
     return driver
 
 
 def get_driver_aws_lambda_docker():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # 창 숨기기
-    options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
-    options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
-    options.add_argument("--window-size=1280x1696")
-    options.add_argument("--single-process")
-    options.add_argument("--disable-dev-shm-usage")  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
-    options.add_argument("--disable-dev-tools")
-    options.add_argument("--no-zygote")
-    options.add_argument(
-        'user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
-
-    options.binary_location = '/opt/chrome/chrome'
-    driver = webdriver.Chrome("/opt/chromedriver", options=options)
+    headless_options.binary_location = '/opt/chrome/chrome'
+    driver = webdriver.Chrome("/opt/chromedriver", options=headless_options)
     return driver
 
 
 def get_driver_aws_lambda_layer():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # 창 숨기기
-    options.add_argument('--no-sandbox')  # 리소스에 대한 액세스를 방지
-    options.add_argument("--disable-gpu")  # 그래픽 가속 비활성화 (일부 버전에서 크롬 GPU 버그 이슈가 있음)
-    options.add_argument("--window-size=1280x1696")
-    options.add_argument("--single-process")
-    options.add_argument("--disable-dev-shm-usage")  # dev/shm을 공유하지 않음 (메모리 부족으로 인한 오류 방지)
-    options.add_argument("--disable-dev-tools")
-    options.add_argument("--no-zygote")
-    options.add_argument(
-        'user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
-
     chromedriver_aws_lambda = "/opt/python/bin/chromedriver"
-    driver = webdriver.Chrome(chromedriver_aws_lambda, options=options)
-
+    driver = webdriver.Chrome(chromedriver_aws_lambda, options=headless_options)
     return driver
 
 
@@ -101,9 +73,10 @@ def namsigdang_crawler(chrome_driver_option):
     try:
         start_time = time.time()  # 시작 시간 저장
 
-        create_env_v2()  # 환경 세팅
+        # create_env_v2()  # 환경 세팅
 
-        my_id, my_pw = check_account()
+        my_id = portal_account.eunpyeong_id
+        my_pw = portal_account.eunpyeong_pw
 
         # write_log(f"데이터 수집을 시작합니다.", send_slack=True)
         slack_msg(f"데이터 수집을 시작합니다.")
