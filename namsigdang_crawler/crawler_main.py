@@ -6,7 +6,6 @@ import time
 import html
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.support.ui import WebDriverWait
@@ -30,9 +29,9 @@ def def_sleep(sleep_time_def=1.2):
     print("..done")
 
 
-def basic_error_msg(error_code, detail_msg):
+def basic_error_msg(error_code, detail_msg, campus_name):
     slack_msg(
-        f"<!channel> *식단 데이터 수집중 오류가 발생했습니다.* (에러코드: {error_code})\n오류가 지속될 경우 관리자에게 문의해주세요. (contact@wookingwoo.com)",
+        f"<!channel> *{campus_name} 식단 업데이트 중 오류가 발생했습니다.* (에러코드: {error_code})\n오류가 지속될 경우 관리자에게 문의해주세요. (contact@wookingwoo.com)",
         status_channel)
     slack_msg(f"<!channel> *{error_code} 에러 발생*: {detail_msg}", debug_channel)
 
@@ -80,14 +79,29 @@ def get_driver_aws_lambda_layer():
 
 
 # main Program
-def namsigdang_crawler(chrome_driver_option):
+def namsigdang_crawler(chrome_driver_option, campus):
     try:
         start_time = time.time()  # 시작 시간 저장
 
-        my_id = portal_account.eunpyeong_id
-        my_pw = portal_account.eunpyeong_pw
+        if campus == "eunpyeong":
+            my_id = portal_account.eunpyeong_id
+            my_pw = portal_account.eunpyeong_pw
+            my_campus_key = campus_key.eunpyeong_code
+            my_firebase_document = campus_key.firebase_eunpyeong_document
+            my_campus_name = campus_key.eunpyeong_campus_name
+        elif campus == "dongjak":
+            my_id = portal_account.dongjak_id
+            my_pw = portal_account.dongjak_pw
+            my_campus_key = campus_key.dongjak_code
+            my_firebase_document = campus_key.firebase_dongjak_document
+            my_campus_name = campus_key.dongjak_campus_name
 
-        slack_msg(f"데이터 수집을 시작합니다.", debug_channel)
+
+        else:
+            basic_error_msg("c416", "Campus is not valid", "")
+            raise Exception("Campus is not valid")
+
+        slack_msg(f"[{my_campus_name}] 데이터 수집을 시작합니다.", debug_channel)
 
         driver_options = {
             "default": get_driver_default,
@@ -101,11 +115,11 @@ def namsigdang_crawler(chrome_driver_option):
         if isinstance(driver, Exception):
             raise driver
 
-        print("크롬 드라이버 실행 완료")
+        print(f"[{my_campus_name}] 크롬 드라이버 실행 완료")
         def_sleep(1)
 
         driver.get("http://portal.ndhs.or.kr/index")
-        print("남도학숙 사이트에 들어갔습니다.")
+        print(f"[{my_campus_name}] 남도학숙 사이트에 들어갔습니다.")
 
         driver.implicitly_wait(3)
         def_sleep()
@@ -115,16 +129,16 @@ def namsigdang_crawler(chrome_driver_option):
 
         stuUserId = driver.find_element(By.ID, element.staff_id)
         stuUserId.send_keys(my_id)
-        print("아이디 입력 완료")
+        print(f"[{my_campus_name}] 아이디 입력 완료")
         def_sleep()
 
         stuPassword = driver.find_element(By.ID, element.staff_pw)
         stuPassword.send_keys(my_pw)
-        print("비밀번호 입력 완료")
+        print(f"[{my_campus_name}] 비밀번호 입력 완료")
         def_sleep()
 
         driver.find_element(By.XPATH, element.staff_login_btn).click()  # Login 버튼 클릭
-        print("로그인 버튼 클릭 완료")
+        print(f"[{my_campus_name}] 로그인 버튼 클릭 완료")
 
         def_sleep(1)
         def_sleep()
@@ -156,10 +170,10 @@ def namsigdang_crawler(chrome_driver_option):
         # driver.implicitly_wait(1)
 
         driver.get(element.menu_url)
-        print("식단표 페이지로 이동했습니다.")
+        print(f"[{my_campus_name}] 식단표 페이지로 이동했습니다.")
 
         driver.find_element(By.XPATH, element.before_week_btn).click()  # 이전 주 보기 클릭
-        print("\'이전주 보기\' 클릭 완료")
+        print(f"[{my_campus_name}] \'이전주 보기\' 클릭 완료")
         def_sleep(0.6)
         def_sleep()
 
@@ -180,25 +194,24 @@ def namsigdang_crawler(chrome_driver_option):
                         if meal_index > 2:
                             raise Exception("Error occurred in parsing menu")
                         meal = chr(ord('a') + meal_index)  # a, b, c 순서로 문자 생성
-                        key = campus_key.eunpyeong_code + date + meal  # key를 생성
+                        key = my_campus_key + date + meal  # key를 생성
                         dic_parsing_menu[key] = html.unescape(td.get_text().strip())
 
             print("dic_parsing_menu:", dic_parsing_menu)
 
             error_dic = {}
             for y in sorted(dic_parsing_menu):
-                if y[0:2] == campus_key.eunpyeong_code:
+                if y[0:2] == my_campus_key:
 
                     # firestore에 메뉴 저장
                     try:
-                        fb_ref_eun_menu = fb_db.collection('menu').document(
-                            campus_key.firebase_eunpyeong_document).collection(f'year_{y[2:6]}').document(
-                            f'month_{y[6:8]}')
+                        fb_ref_eun_menu = fb_db.collection('menu').document(my_firebase_document).collection(
+                            f'year_{y[2:6]}').document(f'month_{y[6:8]}')
                         fb_ref_eun_menu.set({y: dic_parsing_menu[y]}, merge=True)
 
                     except Exception as e:
                         error = str(e)
-                        basic_error_msg("f103", "firestore에 메뉴 저장 중 에러 발생")
+                        basic_error_msg("f103", "firestore에 메뉴 저장 중 에러 발생", my_campus_name)
                         slack_msg("```\n" + error + "\n```", debug_channel)
 
 
@@ -208,10 +221,10 @@ def namsigdang_crawler(chrome_driver_option):
                     print("key값:{}".format(y))
                     error_dic[y] = dic_parsing_menu[y]
 
-            print("날짜별로 분류해 DB에 저장하였습니다.")
+            print(f"[{my_campus_name}] 날짜별로 분류해 DB에 저장하였습니다.")
 
             if len(error_dic) != 0:
-                print("--<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
+                print(f"[{my_campus_name}] --<날짜별 DB분류에 제외된 dic>--\n" + str(error_dic))
 
             #     --------------------------------------------------------------------------------------
 
@@ -223,9 +236,11 @@ def namsigdang_crawler(chrome_driver_option):
         running_time = time.time() - start_time  # 현재시각 - 시작시간 = 실행 시간
         running_time = round(running_time, 3)
 
-        driver.close()  # 브라우저 화면만 닫습니다.
+        # driver.close()  # 브라우저 화면만 닫습니다.
+        driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
 
-        slack_msg(f"식단 데이터를 업데이트했습니다. (runtime: {running_time}sec)", status_channel)
+        slack_msg(f"[{my_campus_name}] 식단 데이터를 업데이트했습니다. (runtime: {running_time}sec)", status_channel)
+        slack_msg(f"[{my_campus_name}] 식단 데이터를 업데이트했습니다. (runtime: {running_time}sec)", debug_channel)
 
 
 
@@ -233,7 +248,7 @@ def namsigdang_crawler(chrome_driver_option):
 
     except Exception as e:
         error = str(e)
-        basic_error_msg("e513", "알 수 없는 에러")
+        basic_error_msg("e513", "알 수 없는 에러", my_campus_name)
         slack_msg("```\n" + error + "\n```", debug_channel)
 
     # finally:
@@ -242,4 +257,5 @@ def namsigdang_crawler(chrome_driver_option):
 
 if __name__ == '__main__':
     chrome_driver_option = "default"
-    namsigdang_crawler(chrome_driver_option)
+    namsigdang_crawler(chrome_driver_option, "eunpyeong")
+    namsigdang_crawler(chrome_driver_option, "dongjak")
