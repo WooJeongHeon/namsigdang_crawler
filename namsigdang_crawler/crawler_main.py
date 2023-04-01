@@ -18,6 +18,7 @@ from firebase_db import fb_db
 from data.account import portal_account
 import constants.web_element as element
 import constants.campus_key as campus_key
+from data.account.slack_key import status_channel, debug_channel
 
 
 def def_sleep(sleep_time_def=1.2):
@@ -27,6 +28,13 @@ def def_sleep(sleep_time_def=1.2):
         print(f"sleep {sleep_time_def // 60}min {sleep_time_def % 60}sec", end=" ")
     time.sleep(sleep_time_def)
     print("..done")
+
+
+def basic_error_msg(error_code, detail_msg):
+    slack_msg(
+        f"<!channel> *식단 데이터 수집중 오류가 발생했습니다.* (에러코드: {error_code})\n오류가 지속될 경우 관리자에게 문의해주세요. (contact@wookingwoo.com)",
+        status_channel)
+    slack_msg(f"<!channel> *{error_code} 에러 발생*: {detail_msg}", debug_channel)
 
 
 headless_options = webdriver.ChromeOptions()
@@ -79,7 +87,7 @@ def namsigdang_crawler(chrome_driver_option):
         my_id = portal_account.eunpyeong_id
         my_pw = portal_account.eunpyeong_pw
 
-        slack_msg(f"데이터 수집을 시작합니다.")
+        slack_msg(f"데이터 수집을 시작합니다.", debug_channel)
 
         driver_options = {
             "default": get_driver_default,
@@ -190,8 +198,8 @@ def namsigdang_crawler(chrome_driver_option):
 
                     except Exception as e:
                         error = str(e)
-                        slack_msg("`firestore에 메뉴 저장 중 에러 발생`")
-                        slack_msg(error + "\n")
+                        basic_error_msg("f103", "firestore에 메뉴 저장 중 에러 발생")
+                        slack_msg("```\n" + error + "\n```", debug_channel)
 
 
                 else:
@@ -217,7 +225,7 @@ def namsigdang_crawler(chrome_driver_option):
 
         driver.close()  # 브라우저 화면만 닫습니다.
 
-        slack_msg(f"성공적으로 크롤링을 마쳤습니다!! (실행시간: {running_time}sec)")
+        slack_msg(f"식단 데이터를 업데이트했습니다. (runtime: {running_time}sec)", status_channel)
 
 
 
@@ -225,8 +233,8 @@ def namsigdang_crawler(chrome_driver_option):
 
     except Exception as e:
         error = str(e)
-        slack_msg("\n\n\t***에러가 발생하였습니다ㅠㅠ")
-        slack_msg(error + "\n")
+        basic_error_msg("e513", "알 수 없는 에러")
+        slack_msg("```\n" + error + "\n```", debug_channel)
 
     # finally:
     #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
