@@ -29,8 +29,14 @@ def def_sleep(sleep_time_def=1.2):
     print("/")
 
 
+def get_driver_default():
+    driver = webdriver.Chrome()
+    return driver
+
+
 def get_driver_local():
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(ChromeDriverManager().install())
     return driver
 
 
@@ -91,7 +97,7 @@ def get_driver_aws_lambda_layer():
 
 
 # main Program
-def namsigdang_crawler():
+def namsigdang_crawler(chrome_driver_option):
     try:
         start_time = time.time()  # 시작 시간 저장
 
@@ -102,7 +108,17 @@ def namsigdang_crawler():
         # write_log(f"데이터 수집을 시작합니다.", send_slack=True)
         slack_msg(f"데이터 수집을 시작합니다.")
 
-        driver = get_driver_aws_lambda_docker()
+        driver_options = {
+            "default": get_driver_default,
+            "local": get_driver_local,
+            "python_docker": get_driver_python_docker,
+            "aws_lambda_docker": get_driver_aws_lambda_docker,
+            "aws_lambda_layer": get_driver_aws_lambda_layer,
+        }
+
+        driver = driver_options.get(chrome_driver_option, lambda: Exception("chrome_driver_option is not valid"))()
+        if isinstance(driver, Exception):
+            raise driver
 
         print("크롬 드라이버 실행 완료")
 
@@ -275,3 +291,8 @@ def namsigdang_crawler():
 
     # finally:
     #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
+
+
+if __name__ == '__main__':
+    chrome_driver_option = "default"
+    namsigdang_crawler(chrome_driver_option)
