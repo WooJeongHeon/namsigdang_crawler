@@ -1,4 +1,4 @@
-from namsigdang_crawler_v2 import namsigdang_crawler
+from crawler_main import namsigdang_crawler
 import json
 
 
