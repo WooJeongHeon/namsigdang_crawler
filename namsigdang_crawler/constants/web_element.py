@@ -13,3 +13,4 @@ staff_login_btn = '//*[@id="staff"]/div/div[2]/button'
 menu_url = "http://portal.ndhs.or.kr/studentLifeSupport/carte/list" # 식단표 url
 
 before_week_btn = "/html/body/div[2]/div[3]/div/h4/button[1]" # 식단 이전주 버튼
+after_week_btn = "/html/body/div[2]/div[3]/div/h4/button[2]" # 식단 다음주 버튼

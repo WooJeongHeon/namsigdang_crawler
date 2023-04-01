@@ -3,6 +3,7 @@
 
 import re
 import time
+import html
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -16,6 +17,7 @@ from slack import slack_msg
 from firebase_db import fb_db
 from data.account import portal_account
 import constants.web_element as element
+import constants.campus_key as campus_key
 
 
 def def_sleep(sleep_time_def=1.2):
@@ -153,66 +155,42 @@ def namsigdang_crawler(chrome_driver_option):
         def_sleep(0.6)
         def_sleep()
 
-        # 4번 반복!!
-        for i in range(1, 5):
+        repeat = 4  # 4번 반복!!
+        for i in range(repeat):
 
-            html = BeautifulSoup(driver.page_source, 'lxml')
-
-            food = html.find_all('tr', attrs={'style': 'height:80px'})
-            print("{'style': 'height:80px'} 검색 완료")
-
-            tag_list = ['</th>', '<td>', '<tr style="height:80px">', '</tr>', '</td>', '<th>',
-                        '<th style="color:red;">',
-                        '\n', '\t']
-            food_list = []
-            for food_ in food:
-                temp_list = []
-                for food__ in food_:
-                    if food__ != '\n':
-                        for tag in tag_list:
-                            food__ = re.sub(tag, '', str(food__))
-                        # print(food__)
-                        food__ = re.sub('&amp;', '&', str(food__))  # &amp를 &로 변환
-
-                        temp_list.append(food__)
-                food_list.append(temp_list)
-
-            compare_list = []
-            regex_temp = re.compile('(?P<year>\d+)년+ (?P<month>\d+)월+ (?P<day>\d+)일')
-
-            # print("\n\n======================\n" + str(food_list) + "\n\n======================\n\n")
-
-            for food_element in food_list:
-                term = ""
-                for term_ in regex_temp.findall(food_element[0])[0]:
-                    term = term + str(term_)
-                compare_list.append([term, food_element[1], food_element[2], food_element[3]])
+            menu_html = BeautifulSoup(driver.page_source, 'html.parser')
 
             dic_parsing_menu = {}  # dic_menu 파일 초기화
 
-            for data in compare_list:
-                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "a"] = data[1]  # eu20180514a
-                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "b"] = data[2]
-                dic_parsing_menu[portal_account.eunpyeong_code + data[0] + "c"] = data[3]
+            for tr in menu_html.find_all('tr'):
+                tds = tr.find_all('td')
+                if len(tds) > 0:
+                    date_str = tr.th.get_text().strip()
+                    date = re.findall(r'\d+', date_str)  # 숫자만 추출
+                    date = ''.join(date)  # 리스트를 문자열로 변환
+                    for meal_index, td in enumerate(tds):
+                        if meal_index > 2:
+                            raise Exception("Error occurred in parsing menu")
+                        meal = chr(ord('a') + meal_index)  # a, b, c 순서로 문자 생성
+                        key = campus_key.eunpyeong_code + date + meal  # key를 생성
+                        dic_parsing_menu[key] = html.unescape(td.get_text().strip())
 
-            print("\n---<dic_parsing_menu>---\n" + str(dic_parsing_menu) + "\n-------------------------")
+            print("dic_parsing_menu:", dic_parsing_menu)
 
             error_dic = {}
             for y in sorted(dic_parsing_menu):
-                if y[0:2] == portal_account.eunpyeong_code:
+                if y[0:2] == campus_key.eunpyeong_code:
 
                     # firestore에 메뉴 저장
                     try:
-                        fb_ref_eun_menu = fb_db.collection('menu').document('Eunpyeong').collection(
-                            f'year_{y[2:6]}').document(f'month_{y[6:8]}')
+                        fb_ref_eun_menu = fb_db.collection('menu').document(
+                            campus_key.firebase_eunpyeong_document).collection(f'year_{y[2:6]}').document(
+                            f'month_{y[6:8]}')
                         fb_ref_eun_menu.set({y: dic_parsing_menu[y]}, merge=True)
 
                     except Exception as e:
                         error = str(e)
-                        # write_log("\n\n\t***firestore에 메뉴 저장 중 에러 발생", send_slack=True)
-                        # write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
-
-                        slack_msg("\n\n\t***firestore에 메뉴 저장 중 에러 발생")
+                        slack_msg("`firestore에 메뉴 저장 중 에러 발생`")
                         slack_msg(error + "\n")
 
 
@@ -229,8 +207,8 @@ def namsigdang_crawler(chrome_driver_option):
 
             #     --------------------------------------------------------------------------------------
 
-            driver.find_element(By.XPATH, '/html/body/div[2]/div[3]/div/h4/button[2]/i').click()  # 다음주 보기 클릭
-            print("\'다음주 보기\' 클릭 완료 (" + str(i) + "/ 4)")
+            driver.find_element(By.XPATH, element.after_week_btn).click()  # 다음주 보기 클릭
+            print(f"\'다음주 보기\' 클릭 완료 ({i + 1}/{repeat})")
             def_sleep(0.6)
             def_sleep()
 
@@ -247,9 +225,6 @@ def namsigdang_crawler(chrome_driver_option):
 
     except Exception as e:
         error = str(e)
-        # write_log("\n\n\t***에러가 발생하였습니다ㅠㅠ", send_slack=True)
-        # write_log(log_text=error + "\n", log_files=[path_all_log, path_error_log], send_slack=True)
-
         slack_msg("\n\n\t***에러가 발생하였습니다ㅠㅠ")
         slack_msg(error + "\n")
 
