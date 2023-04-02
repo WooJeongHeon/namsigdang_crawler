@@ -255,7 +255,12 @@ def namsigdang_crawler(chrome_driver_option, campus):
     #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
 
 
-if __name__ == '__main__':
-    chrome_driver_option = "local"
+def run(chrome_driver_option):
     namsigdang_crawler(chrome_driver_option, "eunpyeong")
     namsigdang_crawler(chrome_driver_option, "dongjak")
+
+
+if __name__ == '__main__':
+    chrome_driver_option = "local"
+    # chrome_driver_option = "python_docker"
+    run(chrome_driver_option)
