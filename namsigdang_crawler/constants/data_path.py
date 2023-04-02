@@ -1,4 +1,4 @@
-from my_date import my_date, day_of_the_week, today_date
+from .my_date import my_date, day_of_the_week, today_date
 
 project_path = '.'
 # project_path = '/home/ubuntu/namsigdang-server/namsigdang_crawler' # 절대경로 기입
