@@ -256,6 +256,6 @@ def namsigdang_crawler(chrome_driver_option, campus):
 
 
 if __name__ == '__main__':
-    chrome_driver_option = "default"
+    chrome_driver_option = "local"
     namsigdang_crawler(chrome_driver_option, "eunpyeong")
     namsigdang_crawler(chrome_driver_option, "dongjak")
