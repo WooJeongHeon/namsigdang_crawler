@@ -4,6 +4,7 @@
 import re
 import time
 import html
+import traceback
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -250,6 +251,7 @@ def namsigdang_crawler(chrome_driver_option, campus):
         error = str(e)
         basic_error_msg("e513", "알 수 없는 에러", my_campus_name)
         slack_msg("```\n" + error + "\n```", debug_channel)
+        traceback.print_exc()
 
     # finally:
     #     driver.quit()  # 브라우저를 닫고, 프로세스도 종료합니다.
@@ -261,6 +263,6 @@ def run(chrome_driver_option):
 
 
 if __name__ == '__main__':
-    chrome_driver_option = "local"
+    chrome_driver_option = "default"
     # chrome_driver_option = "python_docker"
     run(chrome_driver_option)
